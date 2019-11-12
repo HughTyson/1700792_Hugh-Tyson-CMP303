@@ -1,0 +1,17 @@
+﻿  Ball.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\ball.cpp(72): warning C4305: '*=': truncation from 'double' to 'float'
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\ball.cpp(100): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\ball.cpp(101): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\ball.cpp(112): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\ball.cpp(113): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\ball.cpp(188): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\ball.cpp(200): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+  1700792_Hugh Tyson CMP303.vcxproj -> F:\Current Year Work\Networking\1700792_Hugh Tyson CMP303\Debug\1700792_Hugh Tyson CMP303.exe

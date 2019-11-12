@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="GameStates and Managers">
+      <UniqueIdentifier>{e039d60e-79c1-4e00-8d76-e122277013ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{967b9042-f80b-43e2-ab0c-ab979762fe2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Input">
+      <UniqueIdentifier>{de919546-28e5-48c6-bb1b-5ad2b1aa5790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Audio">
+      <UniqueIdentifier>{12e9a26b-a7c5-4426-9df4-d28c450a8b15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Animation">
+      <UniqueIdentifier>{ebabdcb6-9e2c-4971-8528-844f4aabd3b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Sprite">
+      <UniqueIdentifier>{2477ab53-7da0-4e26-b1b5-f7ba1682628a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprites">
+      <UniqueIdentifier>{8ec7ae07-4e0d-40d5-a63f-84247968c5ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprites\Animated Sprites">
+      <UniqueIdentifier>{7b27fad1-cb06-4379-bd98-f6c2e54fd9a6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>GameStates and Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu_State.cpp">
+      <Filter>GameStates and Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Tools\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicObject.cpp">
+      <Filter>Tools\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Tools\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Tools\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Tools\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="MySprite.cpp">
+      <Filter>Tools\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Sprites\Animated Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="Cursor.cpp">
+      <Filter>Sprites\Animated Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Tools\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Level1_State.cpp">
+      <Filter>GameStates and Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Ball.cpp">
+      <Filter>Sprites</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMap.cpp">
+      <Filter>Tools\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Select_Players_State.cpp">
+      <Filter>GameStates and Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Arrow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameState.h">
+      <Filter>GameStates and Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu_State.h">
+      <Filter>GameStates and Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Tools\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicObject.h">
+      <Filter>Tools\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Tools\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Tools\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Tools\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="MySprite.h">
+      <Filter>Tools\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Sprites\Animated Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="Cursor.h">
+      <Filter>Sprites\Animated Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Tools\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Level1_State.h">
+      <Filter>GameStates and Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
+      <Filter>Sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMap.h">
+      <Filter>Tools\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Select_Players_State.h">
+      <Filter>GameStates and Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hole.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Arrow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
