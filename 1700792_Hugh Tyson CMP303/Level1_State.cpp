@@ -137,7 +137,7 @@ void Level1_State::Sprite_Init()
 	temp_arrow.setPosition(0, 0);
 	temp_player.setOrigin(sf::Vector2f(0, 0));
 
-	arrow.push_back(temp_player);
+//	arrow.push_back(temp_player);
 
 
 	//an if statement that is used for any sprites that get declared if the game is multiplayer
