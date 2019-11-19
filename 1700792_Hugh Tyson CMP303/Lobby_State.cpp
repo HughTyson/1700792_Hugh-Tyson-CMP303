@@ -85,4 +85,5 @@ void Lobby_State::Client_Update()
 {
 
 	game_system->network_->lobby_update(ready, exit);
+
 }

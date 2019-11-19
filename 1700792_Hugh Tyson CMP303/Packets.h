@@ -12,6 +12,13 @@ struct Client_Lobby_Message
 	bool exit;
 };
 
+struct Server_Lobby_Message
+{
+	int playerCount;
+	std::string player_name[2];
+	bool start_game;
+};
+
 struct Client_InGame_Message
 {
 	float mouse_pos_x;
@@ -30,12 +37,16 @@ public:
 	~Packets();
 	
 	sf::Packet sendInitialData(Initial_Connect i);
-	sf::Packet sendLobbyData(sf::Packet packet, Client_Lobby_Message cl);
+
+	sf::Packet sendClientLobbyData(Client_Lobby_Message cl);
+	sf::Packet sendServerLobbyData(Server_Lobby_Message sl);
+
+
 	sf::Packet sendGameData(sf::Packet packet, Client_InGame_Message cg);
 
 	Initial_Connect recieveInitialData(sf::Packet temp_pack, Initial_Connect i);
-	Client_Lobby_Message recieveLobbyData(sf::Packet temp_pack, Client_Lobby_Message cl);
-
+	Client_Lobby_Message recieveClientLobbyData(sf::Packet temp_pack, Client_Lobby_Message cl);
+	Server_Lobby_Message recieveServerLobbyData(sf::Packet temp_pack, Server_Lobby_Message sl);
 
 
 private:

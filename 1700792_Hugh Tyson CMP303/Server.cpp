@@ -9,6 +9,8 @@ Server::Server()
 	max_players = 2;
 	listener.listen(port);
 	_state = SERVER_LOBBY;
+	listener.setBlocking(false);
+	start_game = false;
 }
 
 
@@ -21,41 +23,35 @@ void Server::update()
 {
 	while (true)
 	{
-		
-		if (_state == SERVER_LOBBY)
-		{
-			AddPlayer();
-		}
-			
+		AddPlayer();
+	
 		RecieveMessage();
-
+	
 		SendMessage();
 	}
-
 }
 
 
 void Server::AddPlayer()
 {
-	listener.setBlocking(false);
 	
-	//tcpClient.setBlocking(false);
 
 	if (listener.accept(tcpClient[players_connected]) == sf::Socket::Done)
 	{
-		std::cout << "connection from " << tcpClient[players_connected].getRemoteAddress() << std::endl;
-		temp_info.ip = tcpClient[players_connected].getRemoteAddress();
-
+	
+		clientInfo[players_connected].ip = tcpClient[players_connected].getRemoteAddress();
+		clientInfo[players_connected].player_number = players_connected;
+	
 		if (players_connected == 0)
 		{
-			temp_info.host == true;
+			clientInfo[players_connected].host = true;
+			
 		}
-
-
-		temp_info.player_number = players_connected + 1;
+		
 		players_connected += 1;
-		clientInfo.push_back(temp_info);
 
+		tcpClient[players_connected].setBlocking(false);
+		
 	}
 }
 
@@ -64,19 +60,19 @@ void Server::RecieveMessage()
 
 	for (int i = 0; i < players_connected; i++)
 	{
+		
 		sf::Socket::Status status = tcpClient[i].receive(packets);
 
 		if (status == sf::Socket::Status::Done)
 		{
 			if (_state == SERVER_LOBBY)
 			{
-				//i_connect = packets.recieveInitialData(packets,i_connect);
-
-				//std::cout << i_connect.PlayerName << std::endl;
-
 				l_message = packets.recieveLobbyData(packets, l_message);
 
 				std::cout << l_message.ready << "," << l_message.exit << std::endl;
+
+				clientInfo[i].player_ready = l_message.ready;
+				clientInfo[i].player_exit = l_message.exit;
 			}
 
 		}
@@ -89,7 +85,31 @@ void Server::SendMessage()
 
 	if (_state == SERVER_LOBBY)
 	{
+		for (int i = 0; i < players_connected; i++)
+		{
+			
+			sl_message.playerCount = players_connected;
+			sl_message.player_name[0] = clientInfo[0].player_name;
+			sl_message.player_name[1] = clientInfo[1].player_name;
+			sl_message.start_game = start_game;
 
+			sf::Packet send_packet;
+			send_packet = packets.sendServerLobbyData(sl_message);
+			tcpClient[i].send(send_packet);
+		}
+
+
+	}
+
+
+}
+
+void Server::updateServer()
+{
+
+	if (_state == SERVER_LOBBY)
+	{
+		
 	}
 
 

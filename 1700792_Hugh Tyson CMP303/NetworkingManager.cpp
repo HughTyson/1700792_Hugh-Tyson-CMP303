@@ -22,7 +22,7 @@ void NetworkingManager::server_init()
 
 void NetworkingManager::connect_player()
 {
-	sf::TcpSocket connector;
+	
 	sf::Socket::Status status = connector.connect("localhost", port);
 
 	if (status != sf::Socket::Done)
@@ -36,21 +36,36 @@ void NetworkingManager::connect_player()
 		
 		connector.send(send_packet);
 	}
-	
-	
 }
 
 void NetworkingManager::lobby_update(bool ready, bool exit)
 {
+
 	l_message.ready = ready;
 	l_message.exit = exit;
 	sf::Packet send_packet;
 
-	send_packet = packet.sendLobbyData(packet, l_message);
+	send_packet = packet.sendClientLobbyData(l_message);
 
 	connector.send(send_packet);
 
+}
+
+void NetworkingManager::lobby_recive(bool* start_game, int* amount_of_players)
+{
+
+	sf::Socket::Status status = connector.receive(packet);
+
+	if (status == sf::Socket::Status::Done)
+	{
+		sl_message = packet.recieveServerLobbyData();
+	}
+
+
+
 
 }
+
+
 
 

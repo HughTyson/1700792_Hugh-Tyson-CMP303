@@ -5,16 +5,28 @@
 
 enum serverState
 {
-	SERVER_LOBBY, SERVER_GAME
+	INIT_CONNECT, SERVER_LOBBY, SERVER_GAME
 };
 
 struct ClientInfo
 {
 public:
+
+	bool connected;
+	std::string player_name;
+	int player_number;
+
+
 	sf::IpAddress ip;
 	int port;
-	int player_number;
+	
 	bool host;
+
+	//Lobby Info
+
+	bool player_ready;
+	bool player_exit;
+
 };
 
 class Server
@@ -36,6 +48,8 @@ private:
 	void RecieveMessage();
 	void SendMessage();
 
+	void updateServer();
+
 	
 
 	//varibles for the server
@@ -44,17 +58,20 @@ private:
 	int players_connected;
 	int max_players;
 	serverState _state;
+	bool start_game;
 
 	sf::TcpSocket tcpClient[2];
+	
 	sf::TcpListener listener;
 
-	std::vector<ClientInfo> clientInfo;
-	ClientInfo temp_info;
+	ClientInfo clientInfo[2];
 
 	//packets
 
 	Packets packets;
 	Initial_Connect i_connect;
 	Client_Lobby_Message l_message;
+
+	Server_Lobby_Message sl_message;
 };
 

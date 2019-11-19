@@ -14,6 +14,7 @@ public:
 	void server_init();
 
 	void lobby_update(bool ready, bool exit);
+	void lobby_recive(bool* start_game, int* amount_of_players);
 	
 	bool getServerRunning() { return server_running; }	
 	
@@ -35,5 +36,7 @@ protected:
 	Packets packet;
 	Initial_Connect i_connect;
 	Client_Lobby_Message l_message;
+	Server_Lobby_Message sl_message;
+	
 };
 
