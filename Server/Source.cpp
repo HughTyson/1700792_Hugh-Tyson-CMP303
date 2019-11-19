@@ -12,13 +12,12 @@ int main()
 
 	while (server_on)
 	{
-		if (selector.wait())
-		{
+		
 			if (socket.bind(5400) != sf::Socket::Done)
 			{
 				std::cout << "Error" << std::endl;
 			}
-		}
+		
 
 	}
 

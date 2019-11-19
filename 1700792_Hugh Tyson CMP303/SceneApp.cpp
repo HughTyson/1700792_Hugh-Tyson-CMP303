@@ -80,8 +80,6 @@ void System::Init()
 
 	local_multiplayer = true;
 
-
-
 	//tileMap.loadTexture("gfx/groundGrass_mown.png");
 
 	tileMap.loadTexture((char*)"gfx/ground.png");
@@ -105,6 +103,9 @@ void System::Init()
 
 	view.setSize(830, 630);
 	view.setCenter(415, 315);
+
+
+	network_ = new NetworkingManager();
 }
 
 void System::Release() //Clean up functin for system
@@ -139,4 +140,14 @@ bool System::getLocalMulti()
 void System::setLocalMulti(bool multi)
 {
 	local_multiplayer = multi;
+}
+
+bool System::getOnlineMulti()
+{
+	return online_multiplayer;
+}
+
+void System::setOnlineMulti(bool multi)
+{
+	online_multiplayer = multi;
 }

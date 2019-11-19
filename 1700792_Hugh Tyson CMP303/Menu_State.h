@@ -3,9 +3,10 @@
 #include "Button.h"
 #include "Cursor.h"
 #include "Collision.h"
+
 enum MCondition_State
 {
-	 MENU, GAME, NETWORKING, FINISH, EXIT, HOW_TO_PLAY
+	 MENU, GAME, NETWORKING, FINISH, EXIT, HOW_TO_PLAY, FINISH_NETWORK
 };
 
 
@@ -33,6 +34,9 @@ public:
 	void HowtoPlayButton();
 	void HowtoPlayScreen(float deltatime);
 
+	void NetworkingMenu(float deltatime, MCondition_State& menu_change);
+	void NetworkingButton();
+
 
 	MCondition_State state_;
 	inline void SetState(MCondition_State newState) { state_ = newState; state_timer_ = 0.f; }
@@ -49,6 +53,12 @@ private:
 	Button start_button;
 	Button how_to_button;
 	Button back_button;
+	Button networking_button;
+
+	//Networking Button
+
+	Button create_server_button;
+	Button join_server_button;
 
 	bool button_hover;
 

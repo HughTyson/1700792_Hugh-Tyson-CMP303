@@ -5,6 +5,7 @@
 #include "MySprite.h"
 #include "TileMap.h"
 #include "AudioManager.h"
+#include "NetworkingManager.h"
 
 
 class GameState;
@@ -49,6 +50,9 @@ public:
 	bool getLocalMulti();
 	void setLocalMulti(bool multi);
 
+	bool getOnlineMulti();
+	void setOnlineMulti(bool multi);
+
 
 	sf::RenderWindow *window_;
 	Input* input_;
@@ -68,9 +72,12 @@ public:
 
 	sf::View view;
 
+	NetworkingManager* network_;
+
 private:
 
 	bool local_multiplayer;
+	bool online_multiplayer;
 	float mousex = 0;
 	float mousey = 0;
 };

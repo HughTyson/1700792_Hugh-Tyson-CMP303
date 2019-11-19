@@ -41,6 +41,11 @@ GameState * Menu_Manager::Update(float delta_time)
 
 	if (_state != MCondition_State::FINISH)
 	{
+		if (_state == MCondition_State::FINISH_NETWORK)
+		{
+			return new Lobby_Manager;
+		}
+
 		return this;
 	}
 	else if (_state == MCondition_State::FINISH)
@@ -131,4 +136,39 @@ void Select_PLayer_Manager::Draw()
 
 void Select_PLayer_Manager::OnExit()
 {
+}
+
+//lobby state
+
+void Lobby_Manager::OnEnter()
+{
+	lobby.OnEnter();
+}
+
+GameState * Lobby_Manager::Update(float delta_time)
+{
+
+	lobby.Update(delta_time, _state);
+
+	if (_state != LobbyCondition_State::SERVER_READY)
+	{
+		return this;
+	}
+	else if (_state == LobbyCondition_State::SERVER_READY)
+	{
+		return new Level1_Manager;
+	}
+
+	return this;
+	
+}
+
+void Lobby_Manager::Draw()
+{
+	lobby.Draw();
+}
+
+void Lobby_Manager::OnExit()
+{
+	lobby.OnExit();
 }

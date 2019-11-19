@@ -37,6 +37,9 @@
     <Filter Include="Sprites\Animated Sprites">
       <UniqueIdentifier>{7b27fad1-cb06-4379-bd98-f6c2e54fd9a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Networking">
+      <UniqueIdentifier>{93532354-eada-4787-9205-9221ab357b3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -99,6 +102,18 @@
     <ClCompile Include="Arrow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkingManager.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Server.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Lobby_State.cpp">
+      <Filter>GameStates and Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Packets.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameState.h">
@@ -157,6 +172,24 @@
     </ClInclude>
     <ClInclude Include="Arrow.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkingManager.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Server.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Server_Init.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Lobby_State.h">
+      <Filter>GameStates and Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientMessageStructs.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Packets.h">
+      <Filter>Networking</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

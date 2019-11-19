@@ -49,6 +49,8 @@ void Menu_State::Update(float deltatime, MCondition_State & menu_change)
 			
 			StartButton(menu_change);
 
+			NetworkingButton();
+
 			HowtoPlayButton();
 		
 			
@@ -69,15 +71,13 @@ void Menu_State::Update(float deltatime, MCondition_State & menu_change)
 		case MCondition_State::NETWORKING:
 		{
 
-			
+			NetworkingMenu(deltatime, menu_change);
 
 		}
 		break;
 		case MCondition_State::HOW_TO_PLAY:
 		{
-
 			HowtoPlayScreen(deltatime);
-
 		}
 		
 		break;
@@ -105,20 +105,20 @@ void Menu_State::Draw()
 
 		game_system->window_->draw(start_button);
 		game_system->window_->draw(how_to_button);
+		game_system->window_->draw(networking_button);
 
 	}
 	break;
 	case MCondition_State::NETWORKING:
 	{
 
-
+		game_system->window_->draw(create_server_button);
+		game_system->window_->draw(join_server_button);
 	}
 	break;
 	case MCondition_State::HOW_TO_PLAY:
 	{
-
 		game_system->window_->draw(back_button);
-	
 		game_system->window_->draw(menu_text);
 	}
 
@@ -182,6 +182,24 @@ void Menu_State::Sprite_Init()
 	//	std::cout << "Arial not loaded" << std::endl;
 	//}
 
+	networking_button.setTexture(&back_red_texture);
+	networking_button.setSize(sf::Vector2f(400, 150));
+	networking_button.setCollisionBox(sf::FloatRect(40, 50, 280, 100));
+	networking_button.setOrigin(sf::Vector2f(0, 0));
+	networking_button.setPosition(20, 100);
+	
+	
+	create_server_button.setTexture(&back_red_texture);
+	create_server_button.setSize(sf::Vector2f(350, 150));
+	create_server_button.setCollisionBox(sf::FloatRect(40, 50, 280, 100));
+	create_server_button.setOrigin(0, 0);
+	create_server_button.setPosition(50, 166);
+
+	join_server_button.setTexture(&back_red_texture);
+	join_server_button.setSize(sf::Vector2f(350, 150));
+	join_server_button.setCollisionBox(sf::FloatRect(40, 50, 280, 100));
+	join_server_button.setOrigin(0, 0);
+	join_server_button.setPosition(450, 166);
 
 }
 
@@ -200,6 +218,7 @@ void Menu_State::SpriteUpdating_Menu(float deltatime)
 {
 	start_button.update(deltatime);
 	how_to_button.update(deltatime);
+	networking_button.update(deltatime);
 
 }
 
@@ -284,4 +303,71 @@ void Menu_State::HowtoPlayScreen(float deltatime)
 	//setting the text to tell the player how ot play
 	menu_text.setString("CONTROLS \nMOVE BALL : CLICK WHERE YOU WANT BALL TO GO, DRAG TOWARDS BALL AND RELEASE CLICK. \nPAUSE : P \nOBJECTIVE : GET YOUR BALL IN THE HOLE WITH THE LEAST AMOUNT OF SHOTS TAKEN \nEXIT : TO EXIT PUSH THE ESCAPE KEY");
 	back_button.update(deltatime);
+}
+
+void Menu_State::NetworkingMenu(float deltatime, MCondition_State& menu_change)
+{
+
+	if (Collision::checkBoundingBox(game_system->cursor_, &create_server_button)) //checks if the cursor and button collide
+	{
+		game_system->cursor_->collisionResponse(NULL);
+		create_server_button.collisionResponse(NULL);
+		button_hover = true; //if their is collision set back collision variable to true
+		create_server_button.setTexture(&back_green_texture); //change button colour to green if there is collision
+	}
+	else
+	{
+		button_hover = false;
+		create_server_button.setTexture(&back_red_texture); // if no collision set texture red
+	}
+
+	if (button_hover == true) 
+	{
+		if (game_system->input_->isMouseLeftDown() == true) {
+			// if the left mouse button is clicked when mouse collides with button change instructions to false to display the main menu
+			if (!game_system->network_->getServerRunning())
+			{
+				game_system->network_->server_init();
+				menu_change = FINISH_NETWORK;
+				game_system->input_->setMousePosition(0, 0);
+			}
+		}
+
+	}
+
+	//if (Collision::checkBoundingBox(game_system->cursor_, &join_server_button))
+	//{
+	//	if (game_system->input_->isMouseLeftDown() == true) {
+	//		// if the left mouse button is clicked when mouse collides with button change instructions to false to display the main menu
+	//		state_ = MENU;
+
+	//	}
+	//}
+
+}
+
+void Menu_State::NetworkingButton()
+{
+
+	if (Collision::checkBoundingBox(game_system->cursor_, &networking_button)) //checks if the cursor and button collide
+	{
+		game_system->cursor_->collisionResponse(NULL);
+		networking_button.collisionResponse(NULL);
+		button_hover = true; //if their is collision set back collision variable to true
+		networking_button.setTexture(&back_green_texture); //change button colour to green if there is collision
+	}
+	else
+	{
+		button_hover = false;
+		networking_button.setTexture(&back_red_texture); // if no collision set texture red
+	}
+
+	if (button_hover == true) {
+
+		if (game_system->input_->isMouseLeftDown() == true) {
+			state_ = NETWORKING;
+		}
+
+	}
+
 }
