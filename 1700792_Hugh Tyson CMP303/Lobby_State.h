@@ -1,11 +1,17 @@
 #pragma once	
 #include "SceneApp.h"
 #include "Button.h"
+#include "Collision.h"
 
 enum LobbyCondition_State
-	{
-		LOBBY, SERVER_READY, EXIT_SERVER
-	};
+{
+	LOBBY, SERVER_READY, EXIT_SERVER
+};
+
+struct lobby_data
+{
+	bool start_game;
+};
 
 class Lobby_State
 {
@@ -27,9 +33,14 @@ private:
 	//functions local to the state
 	void Inputs();
 	void Sprite_Init();
-	void Sprite_Updating();
-	void Client_Update();
+	void Sprite_Updating(float deltatime);
+	void Client_Update(LobbyCondition_State & lobby_change);
 
+	void Ready_Button();
+	void Exit_Button();
+	bool button_hover;
+
+	lobby_data data;
 
 	//Sprite Button varibles
 	Button ready_button;

@@ -11,19 +11,30 @@ Packets::~Packets()
 {
 }
 
+
+
 sf::Packet Packets::sendInitialData(Initial_Connect i)
 {
-	return temp_packet << i.PlayerName;
+	send_packet.clear();
+	return send_packet << i.PlayerName;
 }
 
 sf::Packet Packets::sendClientLobbyData(Client_Lobby_Message cl)
 {
-	return temp_packet << cl.ready << cl.exit;
+	send_packet.clear();
+	return send_packet << cl.type << cl.ready << cl.exit;
 }
 
 sf::Packet Packets::sendServerLobbyData(Server_Lobby_Message sl)
 {
-	return temp_packet << sl.playerCount << sl.start_game;
+	send_packet.clear();
+	return send_packet << sl.type <<sl.start_game;
+}
+
+Message Packets::getType(sf::Packet temp_packet, Message m)
+{
+	temp_packet >> m.type;
+	return m;
 }
 
 Initial_Connect Packets::recieveInitialData(sf::Packet temp_pack,Initial_Connect i)
@@ -34,7 +45,13 @@ Initial_Connect Packets::recieveInitialData(sf::Packet temp_pack,Initial_Connect
 
 Client_Lobby_Message Packets::recieveClientLobbyData(sf::Packet temp_pack, Client_Lobby_Message cl)
 {
-	temp_pack >> cl.ready >> cl.exit;
+	temp_pack >> cl.type >> cl.ready >> cl.exit;
 	return cl;
+}
+
+Server_Lobby_Message Packets::recieveServerLobbyData(sf::Packet temp_packet, Server_Lobby_Message sl)
+{
+	temp_packet >> sl.type >> sl.start_game;
+	return sl;
 }
 

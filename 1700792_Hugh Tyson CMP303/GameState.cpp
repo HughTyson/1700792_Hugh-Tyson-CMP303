@@ -152,12 +152,17 @@ GameState * Lobby_Manager::Update(float delta_time)
 
 	if (_state != LobbyCondition_State::SERVER_READY)
 	{
+		if (_state == EXIT_SERVER)
+		{
+			return new Menu_Manager;
+		}
 		return this;
 	}
 	else if (_state == LobbyCondition_State::SERVER_READY)
 	{
 		return new Level1_Manager;
 	}
+	
 
 	return this;
 	

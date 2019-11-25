@@ -16,7 +16,6 @@ public:
 	std::string player_name;
 	int player_number;
 
-
 	sf::IpAddress ip;
 	int port;
 	
@@ -50,6 +49,8 @@ private:
 
 	void updateServer();
 
+	void dissconenctAll();
+	void wipeClient(int i);
 	
 
 	//varibles for the server
@@ -59,19 +60,21 @@ private:
 	int max_players;
 	serverState _state;
 	bool start_game;
+	bool close_server;
 
 	sf::TcpSocket tcpClient[2];
 	
 	sf::TcpListener listener;
 
-	ClientInfo clientInfo[2];
+	ClientInfo *clientInfo[2];
 
 	//packets
 
 	Packets packets;
+	Message incoming;
 	Initial_Connect i_connect;
-	Client_Lobby_Message l_message;
-
+	Client_Lobby_Message cl_message;
 	Server_Lobby_Message sl_message;
+
 };
 

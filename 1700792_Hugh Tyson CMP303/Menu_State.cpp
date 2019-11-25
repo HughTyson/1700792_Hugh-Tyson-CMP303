@@ -114,6 +114,7 @@ void Menu_State::Draw()
 
 		game_system->window_->draw(create_server_button);
 		game_system->window_->draw(join_server_button);
+
 	}
 	break;
 	case MCondition_State::HOW_TO_PLAY:
@@ -186,7 +187,7 @@ void Menu_State::Sprite_Init()
 	networking_button.setSize(sf::Vector2f(400, 150));
 	networking_button.setCollisionBox(sf::FloatRect(40, 50, 280, 100));
 	networking_button.setOrigin(sf::Vector2f(0, 0));
-	networking_button.setPosition(20, 100);
+	networking_button.setPosition(400, 350);
 	
 	
 	create_server_button.setTexture(&back_red_texture);
@@ -308,32 +309,9 @@ void Menu_State::HowtoPlayScreen(float deltatime)
 void Menu_State::NetworkingMenu(float deltatime, MCondition_State& menu_change)
 {
 
-	if (Collision::checkBoundingBox(game_system->cursor_, &create_server_button)) //checks if the cursor and button collide
-	{
-		game_system->cursor_->collisionResponse(NULL);
-		create_server_button.collisionResponse(NULL);
-		button_hover = true; //if their is collision set back collision variable to true
-		create_server_button.setTexture(&back_green_texture); //change button colour to green if there is collision
-	}
-	else
-	{
-		button_hover = false;
-		create_server_button.setTexture(&back_red_texture); // if no collision set texture red
-	}
+	CreateServer(menu_change);
 
-	if (button_hover == true) 
-	{
-		if (game_system->input_->isMouseLeftDown() == true) {
-			// if the left mouse button is clicked when mouse collides with button change instructions to false to display the main menu
-			if (!game_system->network_->getServerRunning())
-			{
-				game_system->network_->server_init();
-				menu_change = FINISH_NETWORK;
-				game_system->input_->setMousePosition(0, 0);
-			}
-		}
-
-	}
+	JoinServer(menu_change);
 
 	//if (Collision::checkBoundingBox(game_system->cursor_, &join_server_button))
 	//{
@@ -369,5 +347,68 @@ void Menu_State::NetworkingButton()
 		}
 
 	}
+
+}
+
+void Menu_State::CreateServer(MCondition_State& menu_change)
+{
+	if (Collision::checkBoundingBox(game_system->cursor_, &create_server_button)) //checks if the cursor and button collide
+	{
+		game_system->cursor_->collisionResponse(NULL);
+		create_server_button.collisionResponse(NULL);
+		button_hover = true; //if their is collision set back collision variable to true
+		create_server_button.setTexture(&back_green_texture); //change button colour to green if there is collision
+	}
+	else
+	{
+		button_hover = false;
+		create_server_button.setTexture(&back_red_texture); // if no collision set texture red
+	}
+
+	if (button_hover == true)
+	{
+		if (game_system->input_->isMouseLeftDown() == true) {
+			
+			if (!game_system->network_->getServerRunning())
+			{
+				game_system->network_->server_init();
+				menu_change = FINISH_NETWORK;
+				game_system->input_->setMousePosition(0, 0);
+			}
+		}
+
+	}
+}
+
+void Menu_State::JoinServer(MCondition_State & menu_change)
+{
+	if (Collision::checkBoundingBox(game_system->cursor_, &join_server_button))
+	{
+		game_system->cursor_->collisionResponse(NULL);
+		join_server_button.collisionResponse(NULL);
+		button_hover = true; //if their is collision set back collision variable to true
+		join_server_button.setTexture(&back_green_texture); //change button colour to green if there is collision
+	}
+	else
+	{
+		button_hover = false;
+		join_server_button.setTexture(&back_red_texture); // if no collision set texture red
+	}
+
+	if (button_hover == true)
+	{
+		if (game_system->input_->isMouseLeftDown() == true) 
+		{
+			if (game_system->network_->connect_player())
+			{
+				menu_change = FINISH_NETWORK;
+			}
+			// if the left mouse button is clicked when mouse collides with button change instructions to false to display the main menu
+			state_ = MENU;
+
+		}
+	}
+
+
 
 }

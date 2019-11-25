@@ -36,6 +36,8 @@ public:
 
 	void NetworkingMenu(float deltatime, MCondition_State& menu_change);
 	void NetworkingButton();
+	void CreateServer(MCondition_State& menu_change);
+	void JoinServer(MCondition_State& menu_change);
 
 
 	MCondition_State state_;
@@ -60,7 +62,7 @@ private:
 	Button create_server_button;
 	Button join_server_button;
 
-	bool button_hover;
+	bool button_hover = false;
 
 	sf::Texture how_to_red_texture;
 	sf::Texture how_to_green_texture;
