@@ -36,7 +36,7 @@ public:
 
 	void Pause_Update(LCondition_State & menu_change);
 
-	void Texture_Clean_Up();
+	
 	void Object_Clean_Up();
 
 	LCondition_State state_;

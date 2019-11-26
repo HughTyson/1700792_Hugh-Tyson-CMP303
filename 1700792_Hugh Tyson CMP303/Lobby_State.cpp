@@ -42,13 +42,11 @@ void Lobby_State::Update(float frame_time, LobbyCondition_State & lobby_change)
 		}
 		case LobbyCondition_State::EXIT_SERVER:
 		{
+			game_system->network_->disconnect();
 			lobby_change = EXIT_SERVER;
 			break;
 		}
 	}
-
-
-
 }
 
 void Lobby_State::Draw()
@@ -100,9 +98,9 @@ void Lobby_State::Client_Update(LobbyCondition_State & lobby_change)
 
 	data.start_game = game_system->network_->lobby_recive(&data.start_game);
 
-	if (exit == true)
+	if (exit == true || game_system->network_->get_connected() == false)
 	{
-		lobby_change = EXIT_SERVER;
+		state_ = EXIT_SERVER;
 	}
 
 	if (data.start_game)

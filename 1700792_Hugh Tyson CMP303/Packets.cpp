@@ -11,12 +11,10 @@ Packets::~Packets()
 {
 }
 
-
-
 sf::Packet Packets::sendInitialData(Initial_Connect i)
 {
 	send_packet.clear();
-	return send_packet << i.PlayerName;
+	return send_packet << i.type <<  i.PlayerNumber;
 }
 
 sf::Packet Packets::sendClientLobbyData(Client_Lobby_Message cl)
@@ -39,7 +37,7 @@ Message Packets::getType(sf::Packet temp_packet, Message m)
 
 Initial_Connect Packets::recieveInitialData(sf::Packet temp_pack,Initial_Connect i)
 {
-	temp_pack >> i.PlayerName;
+	temp_pack >> i.type >> i.PlayerNumber;
 	return i;
 }
 

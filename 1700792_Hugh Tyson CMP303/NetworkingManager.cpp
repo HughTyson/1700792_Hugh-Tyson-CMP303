@@ -15,7 +15,6 @@ void NetworkingManager::server_init()
 {
 	server_running = true;
 	network_thread.launch();
-	i_connect.PlayerName = "Hugh";
 
 	connect_player();
 }
@@ -32,14 +31,24 @@ bool NetworkingManager::connect_player()
 	}
 	else
 	{
-		sf::Packet send_packet;
-		Packets packet;
-	
-		send_packet = packet.sendInitialData(i_connect);
-	
-		connector.send(send_packet);
-		send_packet.clear();
-	
+		Packets recieve_packet;
+		connector.setBlocking(true);
+		connected = true;
+
+		sf::Socket::Status status = connector.receive(recieve_packet);
+		if (status == sf::Socket::Status::Done)
+		{
+			
+			incoming = recieve_packet.getType(recieve_packet, incoming);
+
+			if (incoming.type == m_Connected)
+			{
+				std::cout << "Welcome Player" << std::endl;
+			}
+
+		}
+		connector.setBlocking(false);
+
 		return true;
 	}
 
@@ -78,11 +87,24 @@ bool NetworkingManager::lobby_recive(bool start_game)
 			
 		}
 	}
+
 	recieve_packet.clear();
 
 	player_info.player_number = sl_message.player_number;
 
+	std::cout << sl_message.player_number << std::endl;
+
 	return sl_message.start_game;
+}
+
+void NetworkingManager::disconnect()
+{
+	connector.disconnect();
+
+	if (server_running == true)
+	{
+		server_running = false;
+	}
 }
 
 void NetworkingManager::player_update(sf::Vector2f mouse_pos, sf::Vector2f ball_velocity)

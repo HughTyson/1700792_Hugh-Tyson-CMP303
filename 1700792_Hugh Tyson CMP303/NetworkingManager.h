@@ -25,6 +25,9 @@ public:
 	void lobby_update(bool ready, bool exit);
 	bool lobby_recive(bool start_game);
 
+	bool get_connected() { return connected; };
+	void disconnect();
+
 	void player_update(sf::Vector2f mouse_pos, sf::Vector2f ball_velocity);
 	PlayerInfo othrplayer_recieved();
 	
@@ -40,14 +43,16 @@ protected:
 	sf::Thread network_thread;
 	sf::IpAddress ip;
 	bool server_running = false;
+	bool connected = false;
 	int port = 53000;
+
 	sf::TcpSocket connector;
+	sf::UdpSocket udp_connector;
 	
 	//packet variables
 	Message incoming;
 	Initial_Connect i_connect;
 	Client_Lobby_Message l_message;
 	Server_Lobby_Message sl_message;
-	
 };
 

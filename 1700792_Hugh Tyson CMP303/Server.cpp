@@ -5,11 +5,14 @@
 Server::Server()
 {
 	port = 53000;
+	port_udp = 52000;
 	players_connected = 0;
 	max_players = 2;
 	listener.listen(port);
 	_state = SERVER_LOBBY;
 	listener.setBlocking(false);
+
+
 	start_game = false;
 	
 	sl_message.start_game = false;
@@ -25,7 +28,6 @@ Server::Server()
 
 }
 
-
 Server::~Server()
 {
 }
@@ -35,10 +37,12 @@ void Server::update()
 {
 	while (true)
 	{
+
+		
 		AddPlayer();
-	
+		
 		RecieveMessage();
-	
+			
 		SendMessage();
 
 		updateServer();
@@ -47,6 +51,12 @@ void Server::update()
 		{
 			if (clientInfo[0]->connected == false)
 			{
+
+				std::cout << "Closing" << std::endl;
+				listener.close();
+				tcpClient[0].disconnect();
+				tcpClient[1].disconnect();
+				
 				break;
 			}
 		}
@@ -56,6 +66,7 @@ void Server::update()
 
 void Server::AddPlayer()
 {
+
 	if (listener.accept(tcpClient[players_connected]) == sf::Socket::Done)
 	{
 		clientInfo[players_connected]->connected = true;
@@ -67,10 +78,23 @@ void Server::AddPlayer()
 			clientInfo[players_connected]->host = true;
 		}
 		
-		players_connected += 1;
+		
 
 		tcpClient[players_connected].setBlocking(false);
+
+		sf::Packet send_packet;
+		i_connect.type = m_Connected;
+		i_connect.PlayerNumber = players_connected;
+
+		send_packet = packets.sendInitialData(i_connect);
+		tcpClient[players_connected].send(send_packet);
+		send_packet.clear();
+
+		players_connected += 1;
 	}
+
+	if(udpClient[players_connected-1].bind)
+
 }
 
 void Server::RecieveMessage()
@@ -79,21 +103,6 @@ void Server::RecieveMessage()
 	{
 		
 		sf::Socket::Status status = tcpClient[i].receive(packets);
-
-		//if (status == sf::Socket::Status::Done)
-		//{
-		//	if (_state == SERVER_LOBBY)
-		//	{
-		//		cl_message = packets.recieveClientLobbyData(packets, cl_message);
-
-		//		std::cout << clientInfo[i]->player_number << "," << cl_message.ready << "," << cl_message.exit << std::endl;
-
-		//		clientInfo[i]->player_ready = cl_message.ready;
-
-		//		clientInfo[i]->player_exit = cl_message.exit;
-		//	}
-		//	packets.clear();
-		//}
 
 		if (status == sf::Socket::Status::Done)
 		{
@@ -108,14 +117,18 @@ void Server::RecieveMessage()
 					{
 						cl_message = packets.recieveClientLobbyData(packets, cl_message);
 
-						std::cout << clientInfo[i]->player_number << "," << cl_message.ready << "," << cl_message.exit << std::endl;
-
 						clientInfo[i]->player_ready = cl_message.ready;
 					
 						clientInfo[i]->player_exit = cl_message.exit;
 					}
+					break;
+				}
 
-					//std::cout << clientInfo[i]->player_number << "," << cl_message.ready << "," << cl_message.exit << std::endl;
+				case m_Client_Game:
+				{
+
+
+					break;
 				}
 			default:
 				break;
@@ -155,11 +168,18 @@ void Server::updateServer()
 
 		for (int num = 0; num < players_connected; num++)
 		{
+			//check if any of the clients want to exit the server
 			if (clientInfo[num]->player_exit == true)
 			{
 
-				tcpClient[num].disconnect();
-				clientInfo[num]->connected = false;
+				tcpClient[num].disconnect(); //disconnect the tcp socket for that client
+				clientInfo[num]->connected = false; 
+				players_connected -= 1; //subtract the amount of clients connected
+
+				if (!clientInfo[num]->host) //if the clienet isn't the server clear that clients information
+				{
+					wipeClient(num);
+				}
 				
 			}
 		}

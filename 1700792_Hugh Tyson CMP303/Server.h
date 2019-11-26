@@ -51,11 +51,11 @@ private:
 
 	void dissconenctAll();
 	void wipeClient(int i);
-	
 
 	//varibles for the server
 	sf::IpAddress ip;
 	int port;
+	int port_udp;
 	int players_connected;
 	int max_players;
 	serverState _state;
@@ -63,6 +63,7 @@ private:
 	bool close_server;
 
 	sf::TcpSocket tcpClient[2];
+	sf::UdpSocket udpClient[2];
 	
 	sf::TcpListener listener;
 

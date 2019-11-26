@@ -1,20 +1,25 @@
 #pragma once
 #include "SFML/Network.hpp"
 
-struct Initial_Connect
-{
-	std::string PlayerName;
-};
+
 
 enum MESSAGETYPE
 {
+
 	m_Client_Lobby,
-	m_Server_Lobby
+	m_Server_Lobby,
+	m_Connected,
+	m_Client_Game
 };
 
 struct Message
 {
 	int type;
+};
+
+struct Initial_Connect : Message
+{
+	std::string PlayerNumber;
 };
 
 struct Client_Lobby_Message : Message

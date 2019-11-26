@@ -33,7 +33,6 @@ void Level1_State::OnExit()
 
 	Object_Clean_Up();
 
-	Texture_Clean_Up();
 
 }
 
@@ -300,7 +299,7 @@ void Level1_State::Object_Clean_Up()
 void Level1_State::NetworkingUpdate()
 {
 
-	game_system->network_->game_update(sf::Vector2f(game_system->cursor_->getPosition().x, game_system->cursor_->getPosition().y), sf::Vector2f(0, 0));
+	//game_system->network_->game_update(sf::Vector2f(game_system->cursor_->getPosition().x, game_system->cursor_->getPosition().y), sf::Vector2f(0, 0));
 
 
 
