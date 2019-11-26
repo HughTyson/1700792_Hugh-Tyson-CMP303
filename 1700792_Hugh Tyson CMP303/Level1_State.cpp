@@ -46,6 +46,8 @@ void Level1_State::Update(float deltatime, LCondition_State & menu_change)
 	{
 	case CONTINUEL:
 	{
+		NetworkingUpdate();
+
 		Player_Update(deltatime);
 
 		Collisions(deltatime);
@@ -274,15 +276,6 @@ void Level1_State::Player_Ground_Collision(int j, float deltatime)
 
 }
 
-void Level1_State::Player_Hole_Collision(int j, float deltatime)
-{
-
-	
-
-	
-
-}
-
 void Level1_State::Pause_Update(LCondition_State & menu_change)
 {
 
@@ -290,12 +283,6 @@ void Level1_State::Pause_Update(LCondition_State & menu_change)
 	{
 		menu_change = FINISHL;
 	}
-
-}
-
-void Level1_State::Texture_Clean_Up()
-{
-	
 
 }
 
@@ -307,6 +294,15 @@ void Level1_State::Object_Clean_Up()
 
 	player.clear();
 	
+
+}
+
+void Level1_State::NetworkingUpdate()
+{
+
+	game_system->network_->game_update(sf::Vector2f(game_system->cursor_->getPosition().x, game_system->cursor_->getPosition().y), sf::Vector2f(0, 0));
+
+
 
 }
 

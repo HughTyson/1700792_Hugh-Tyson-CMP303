@@ -134,6 +134,7 @@ void Server::SendMessage()
 		{
 		
 			sl_message.type = m_Server_Lobby;
+			sl_message.player_number = clientInfo[i]->player_number;
 
 			sf::Packet send_packet;
 			send_packet = packets.sendServerLobbyData(sl_message);

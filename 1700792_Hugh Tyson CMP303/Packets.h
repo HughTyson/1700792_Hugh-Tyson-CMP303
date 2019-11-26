@@ -26,6 +26,7 @@ struct Client_Lobby_Message : Message
 struct Server_Lobby_Message : Message
 {
 	bool start_game;
+	int player_number;
 };
 
 struct Client_InGame_Message

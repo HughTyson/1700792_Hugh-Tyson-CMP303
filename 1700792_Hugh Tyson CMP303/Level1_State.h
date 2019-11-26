@@ -42,7 +42,10 @@ public:
 	LCondition_State state_;
 	inline void SetState(LCondition_State newState) { state_ = newState; state_timer_ = 0.f; }
 
-	std::vector<void*> are_you_ready;
+	//functions used for networking
+
+	void NetworkingUpdate();
+	
 private:
 
 	
@@ -67,8 +70,6 @@ private:
 	sf::Text player2text;
 	sf::Text whatPlayer;
 	
-	
-
 	//variable used to check collisions with tiles in the tilesheets
 
 	std::vector<MySprite>* world;
@@ -80,7 +81,10 @@ private:
 	sf::Texture hole_texture;
 
 
-	//variables used for audio
+	//variables used for networking
+
+	Cursor* second_cursor;
+
 
 
 

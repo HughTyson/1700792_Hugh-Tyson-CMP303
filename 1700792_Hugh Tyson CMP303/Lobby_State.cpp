@@ -72,18 +72,20 @@ void Lobby_State::Inputs()
 void Lobby_State::Sprite_Init()
 {
 	ready_tex.loadFromFile("gfx/ready button.png");
+	ready_tex_red.loadFromFile("gfx/ready button red.png");
 	ready_button.setSize(sf::Vector2f(400, 150));
-	ready_button.setCollisionBox(sf::FloatRect(40, 50, 600, 100));
+	ready_button.setCollisionBox(sf::FloatRect(40, 50, 400, 70));
 	ready_button.setPosition(0, 50);
 	ready_button.setOrigin(sf::Vector2f(0, 0));
-	ready_button.setTexture(&ready_tex);
+	ready_button.setTexture(&ready_tex_red);
 
 	exit_tex.loadFromFile("gfx/exit button.png");
+	exit_tex_red.loadFromFile("gfx/exit button red.png");
 	exit_button.setSize(sf::Vector2f(400, 150));
-	exit_button.setCollisionBox(sf::FloatRect(40, 50, 600, 100));
-	exit_button.setPosition(450,50);
+	exit_button.setCollisionBox(sf::FloatRect(40, 50, 400, 70));
+	exit_button.setPosition(550,50);
 	exit_button.setOrigin(sf::Vector2f(0, 0));
-	exit_button.setTexture(&exit_tex);
+	exit_button.setTexture(&exit_tex_red);
 
 }
 
@@ -115,11 +117,13 @@ void Lobby_State::Ready_Button()
 	{
 		game_system->cursor_->collisionResponse(NULL);
 		ready_button.collisionResponse(NULL);
+		ready_button.setTexture(&ready_tex);
 		button_hover = true;
 	}
 	else
 	{
 		button_hover = false;
+		ready_button.setTexture(&ready_tex_red);
 	}
 
 	if (button_hover == true && !ready)
@@ -127,18 +131,21 @@ void Lobby_State::Ready_Button()
 		if (game_system->input_->isMouseLeftDown())
 		{
 			ready = true;
+			game_system->input_->setMouseLeftDown(false);
 		}
-		button_hover = false;
-		//change the colour of the button
 	}
 	else if (button_hover == true && ready)
 	{
 		if (game_system->input_->isMouseLeftDown())
 		{
 			ready = false;
+			game_system->input_->setMouseLeftDown(false);
 		}
-		//change the colour of the button
-		button_hover = false;
+	}
+
+	if (ready == true)
+	{
+		ready_button.setTexture(&ready_tex);
 	}
 
 }
@@ -150,18 +157,21 @@ void Lobby_State::Exit_Button()
 	{
 		game_system->cursor_->collisionResponse(NULL);
 		exit_button.collisionResponse(NULL);
+		exit_button.setTexture(&exit_tex);
 		button_hover = true;
 	}
 	else
 	{
 		button_hover = false;
+		exit_button.setTexture(&exit_tex_red);
 	}
 
-	if (button_hover == true && !ready)
+	if (button_hover == true)
 	{
 		if (game_system->input_->isMouseLeftDown())
 		{
 			exit = true;
+			game_system->input_->setMouseLeftDown(false);
 		}
 		button_hover = false;
 	}

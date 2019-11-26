@@ -46,7 +46,9 @@ private:
 	Button ready_button;
 	Button exit_button;
 	sf::Texture ready_tex;
+	sf::Texture ready_tex_red;
 	sf::Texture exit_tex;
+	sf::Texture exit_tex_red;
 
 	//mulitplayer variable
 

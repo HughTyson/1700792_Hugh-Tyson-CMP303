@@ -28,7 +28,7 @@ sf::Packet Packets::sendClientLobbyData(Client_Lobby_Message cl)
 sf::Packet Packets::sendServerLobbyData(Server_Lobby_Message sl)
 {
 	send_packet.clear();
-	return send_packet << sl.type <<sl.start_game;
+	return send_packet << sl.type <<sl.start_game << sl.player_number;
 }
 
 Message Packets::getType(sf::Packet temp_packet, Message m)
@@ -51,7 +51,7 @@ Client_Lobby_Message Packets::recieveClientLobbyData(sf::Packet temp_pack, Clien
 
 Server_Lobby_Message Packets::recieveServerLobbyData(sf::Packet temp_packet, Server_Lobby_Message sl)
 {
-	temp_packet >> sl.type >> sl.start_game;
+	temp_packet >> sl.type >> sl.start_game >> sl.player_number;
 	return sl;
 }
 

@@ -80,8 +80,13 @@ bool NetworkingManager::lobby_recive(bool start_game)
 	}
 	recieve_packet.clear();
 
-	return sl_message.start_game;
+	player_info.player_number = sl_message.player_number;
 
+	return sl_message.start_game;
+}
+
+void NetworkingManager::player_update(sf::Vector2f mouse_pos, sf::Vector2f ball_velocity)
+{
 }
 
 
