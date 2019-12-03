@@ -211,8 +211,8 @@ void Menu_State::Audio_Text_Tnit()
 	menu_text.setPosition(90, 100);
 
 
-	game_system->audio_->addMusic("sfx/MenuMusic.ogg", "Menu");
-	game_system->audio_->playMusicbyName("Menu");
+	//game_system->audio_->addMusic("sfx/MenuMusic.ogg", "Menu");
+	//game_system->audio_->playMusicbyName("Menu");
 }
 
 void Menu_State::SpriteUpdating_Menu(float deltatime)

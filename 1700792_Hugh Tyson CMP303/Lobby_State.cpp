@@ -6,6 +6,7 @@ Lobby_State::Lobby_State()
 {
 	button_hover = false;
 	ready = false;
+	data.start_game = false;
 }
 
 
@@ -94,9 +95,17 @@ void Lobby_State::Sprite_Updating(float deltatime)
 
 void Lobby_State::Client_Update(LobbyCondition_State & lobby_change)
 {
-	game_system->network_->lobby_update(ready, exit);
+	float timeSinceLastUpdate = game_system->network_->player_clock.getElapsedTime().asSeconds();
 
-	data.start_game = game_system->network_->lobby_recive(&data.start_game);
+	if (timeSinceLastUpdate >= game_system->network_->updateTick)
+	{
+		game_system->network_->player_clock.restart();
+		game_system->network_->lobby_update(ready, exit);
+	
+		data.start_game = game_system->network_->client_recive();
+
+	}		
+
 
 	if (exit == true || game_system->network_->get_connected() == false)
 	{
@@ -105,8 +114,13 @@ void Lobby_State::Client_Update(LobbyCondition_State & lobby_change)
 
 	if (data.start_game)
 	{
+		std::cout << "now" << std::endl;
+		game_system->setOnlineMulti(true);
+		game_system->setLocalMulti(false);
 		lobby_change = SERVER_READY;
 	}
+
+	
 }
 
 void Lobby_State::Ready_Button()

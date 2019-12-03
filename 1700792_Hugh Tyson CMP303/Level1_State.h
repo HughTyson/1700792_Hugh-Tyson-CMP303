@@ -7,7 +7,7 @@
 #include <vector>
 enum LCondition_State
 {
-	READYL, CONTINUEL, ENDL, PAUSEL, FINISHL
+	READYL, CONTINUEL, ENDL, PAUSEL, FINISHL, FINISHL_SERVER
 };
 
 class Level1_State
@@ -36,7 +36,7 @@ public:
 
 	void Pause_Update(LCondition_State & menu_change);
 
-	
+	float lerp(float a, float b, float t);
 	void Object_Clean_Up();
 
 	LCondition_State state_;
@@ -44,7 +44,10 @@ public:
 
 	//functions used for networking
 
-	void NetworkingUpdate();
+	void NetworkingUpdate(float deltatime);
+	void NetworkingPlayerUpdate();
+	void NetworkingMouseUpdate(float deltatime);
+
 	
 private:
 
@@ -53,6 +56,7 @@ private:
 	float loading_wait = 0.0f;
 
 	bool local_multiplayer = false;
+	bool online_multiplayer = false;
 	int current_player = 0;
 	int amount_of_players = 0;
 
@@ -84,8 +88,11 @@ private:
 	//variables used for networking
 
 	Cursor* second_cursor;
+	sf::Texture cursor_tex;
 
+	bool level_finished;
 
+	int other_player;
 
 
 };

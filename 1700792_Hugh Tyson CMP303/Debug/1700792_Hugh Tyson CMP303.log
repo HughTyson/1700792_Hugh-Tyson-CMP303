@@ -1,2 +1,3 @@
-﻿  NetworkingManager.cpp
-c:\users\amg\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\networkingmanager.cpp(94): error C3867: 'sf::TcpSocket::disconnect': non-standard syntax; use '&' to create a pointer to member
+﻿  Server.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\server.cpp(44): warning C4305: '=': truncation from 'double' to 'float'
+  1700792_Hugh Tyson CMP303.vcxproj -> F:\Current Year Work\Networking\1700792_Hugh Tyson CMP303\Debug\1700792_Hugh Tyson CMP303.exe

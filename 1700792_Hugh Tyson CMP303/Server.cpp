@@ -5,27 +5,47 @@
 Server::Server()
 {
 	port = 53000;
-	port_udp = 52000;
+	
 	players_connected = 0;
 	max_players = 2;
 	listener.listen(port);
 	_state = SERVER_LOBBY;
 	listener.setBlocking(false);
 
-
+	
 	start_game = false;
+	close_server = false;
 	
 	sl_message.start_game = false;
 
 	clientInfo[0] = new ClientInfo;
 	clientInfo[1] = new ClientInfo;
 
-	clientInfo[0]->player_exit = false;
-	clientInfo[1]->player_exit = false;
+	clientInfo[0]->ball_pos = sf::Vector2f(90, 500);
+	clientInfo[1]->ball_pos = sf::Vector2f(120, 500);
 
-	clientInfo[0]->player_ready = false;
-	clientInfo[1]->player_ready = false;
+	clientInfo[0]->mouse_pos = sf::Vector2f(0, 0);
+	clientInfo[1]->mouse_pos = sf::Vector2f(0, 0);
 
+	for (int i = 0; i < 2; i++)
+	{
+		clientInfo[i]->player_number = i;
+		clientInfo[i]->connected = false;
+		clientInfo[i]->port = 0;
+		clientInfo[i]->host = false;
+		clientInfo[i]->strokes = 0;
+		clientInfo[i]->player_ready = false;
+		clientInfo[i]->player_exit = false;
+	
+
+		just_joined[i] = false;
+	}
+
+	clientUpdateTime = 0.5;
+	finish_game = false;
+
+
+	m_Time = 0.f;
 }
 
 Server::~Server()
@@ -38,7 +58,6 @@ void Server::update()
 	while (true)
 	{
 
-		
 		AddPlayer();
 		
 		RecieveMessage();
@@ -51,7 +70,6 @@ void Server::update()
 		{
 			if (clientInfo[0]->connected == false)
 			{
-
 				std::cout << "Closing" << std::endl;
 				listener.close();
 				tcpClient[0].disconnect();
@@ -78,23 +96,12 @@ void Server::AddPlayer()
 			clientInfo[players_connected]->host = true;
 		}
 		
-		
-
 		tcpClient[players_connected].setBlocking(false);
 
-		sf::Packet send_packet;
-		i_connect.type = m_Connected;
-		i_connect.PlayerNumber = players_connected;
-
-		send_packet = packets.sendInitialData(i_connect);
-		tcpClient[players_connected].send(send_packet);
-		send_packet.clear();
+		just_joined[players_connected] = true;
 
 		players_connected += 1;
 	}
-
-	if(udpClient[players_connected-1].bind)
-
 }
 
 void Server::RecieveMessage()
@@ -126,8 +133,16 @@ void Server::RecieveMessage()
 
 				case m_Client_Game:
 				{
+					if (_state == SERVER_GAME)
+					{
+						cg_message = packets.recieveClientInGameData(packets, cg_message);
 
 
+						clientInfo[i]->mouse_pos = sf::Vector2f(cg_message.mouse_pos_x, cg_message.mouse_pos_y);
+						clientInfo[i]->ball_pos = sf::Vector2f(cg_message.ball_pos_x, cg_message.ball_pos_y);
+						clientInfo[i]->strokes = cg_message.strokes;
+						clientInfo[i]->level_complete = cg_message.complete;
+					}
 					break;
 				}
 			default:
@@ -141,20 +156,72 @@ void Server::RecieveMessage()
 
 void Server::SendMessage()
 {
-	if (_state == SERVER_LOBBY)
+
+	float timeSinceLastUpdate = networkUpdateTimer.getElapsedTime().asSeconds();
+
+	if (timeSinceLastUpdate >= clientUpdateTime)
 	{
-		for (int i = 0; i < players_connected; i++)
+		networkUpdateTimer.restart();
+		if (_state == SERVER_LOBBY)
 		{
-		
-			sl_message.type = m_Server_Lobby;
-			sl_message.player_number = clientInfo[i]->player_number;
+
+			for (int i = 0; i < players_connected; i++)
+			{
+					if (just_joined[i] == true)
+					{
+						sf::Packet send_packet;
+						i_connect.type = m_Connected;
+						i_connect.PlayerNumber = players_connected;
+
+						send_packet = packets.sendInitialData(i_connect);
+						tcpClient[i].send(send_packet);
+						send_packet.clear();
+
+						just_joined[i] = false;
+						continue;
+					}
+				sl_message.type = m_Server_Lobby;
+				sl_message.player_number = clientInfo[i]->player_number;
+
+				//std::cout << sl_message.start_game << std::endl;
+
+				sf::Packet send_packet;
+				send_packet = packets.sendServerLobbyData(sl_message);
+				tcpClient[i].send(send_packet);
+				send_packet.clear();
+			}
+		}
+		else if (_state == SERVER_GAME)
+		{
+			sg_message.type = m_Server_Game;
+
+			for (int i = 0; i < players_connected; i++) //load data into struct
+			{
+				sg_message.player_number[i] = clientInfo[i]->player_number;
+
+				sg_message.ball_pos_x[i] = clientInfo[i]->ball_pos.x;
+				sg_message.ball_pos_y[i] = clientInfo[i]->ball_pos.y;
+
+				sg_message.mouse_pos_x[i] = clientInfo[i]->mouse_pos.x;
+				sg_message.mouse_pos_y[i] = clientInfo[i]->mouse_pos.y;
+
+				sg_message.strokes[i] = clientInfo[i]->strokes;
+
+				sg_message.sent_time = gameTime.getElapsedTime().asSeconds();
+
+				//std::cout << "Here" << std::endl;
+			}
 
 			sf::Packet send_packet;
-			send_packet = packets.sendServerLobbyData(sl_message);
-			tcpClient[i].send(send_packet);
+			send_packet = packets.sendServerGameData(sg_message);
+
+			tcpClient[0].send(send_packet);
+			tcpClient[1].send(send_packet);
 			send_packet.clear();
 		}
 	}
+	
+
 }
 
 void Server::updateServer()
@@ -164,6 +231,8 @@ void Server::updateServer()
 		if (clientInfo[0]->player_ready == true && clientInfo[1]->player_ready == true)
 		{
 			sl_message.start_game = true;
+			_state = SERVER_GAME;
+			gameTime.restart();
 		}
 
 		for (int num = 0; num < players_connected; num++)
@@ -171,7 +240,6 @@ void Server::updateServer()
 			//check if any of the clients want to exit the server
 			if (clientInfo[num]->player_exit == true)
 			{
-
 				tcpClient[num].disconnect(); //disconnect the tcp socket for that client
 				clientInfo[num]->connected = false; 
 				players_connected -= 1; //subtract the amount of clients connected
@@ -183,6 +251,10 @@ void Server::updateServer()
 				
 			}
 		}
+	}
+	else if (_state == SERVER_GAME)
+	{
+
 	}
 }
 

@@ -26,6 +26,12 @@ public:
 	bool player_ready;
 	bool player_exit;
 
+	//game info
+
+	sf::Vector2f ball_pos;
+	sf::Vector2f mouse_pos;
+	int strokes;
+	bool level_complete;
 };
 
 class Server
@@ -55,7 +61,7 @@ private:
 	//varibles for the server
 	sf::IpAddress ip;
 	int port;
-	int port_udp;
+
 	int players_connected;
 	int max_players;
 	serverState _state;
@@ -63,7 +69,6 @@ private:
 	bool close_server;
 
 	sf::TcpSocket tcpClient[2];
-	sf::UdpSocket udpClient[2];
 	
 	sf::TcpListener listener;
 
@@ -76,6 +81,22 @@ private:
 	Initial_Connect i_connect;
 	Client_Lobby_Message cl_message;
 	Server_Lobby_Message sl_message;
+	
+	Client_InGame_Message cg_message;
+	Server_InGame_Message sg_message;
+
+	//timing varibles
+
+	sf::Clock networkUpdateTimer;
+	sf::Clock gameTime;
+	float clientUpdateTime;
+
+	//varibles for game state
+
+	bool finish_game;
+	bool just_joined[2];
+
+	float m_Time;
 
 };
 

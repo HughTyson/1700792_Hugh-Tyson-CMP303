@@ -83,6 +83,12 @@ GameState * Level1_Manager::Update(float delta_time)
 		return this;
 	}
 
+	if (_state == FINISHL_SERVER)
+	{
+		return new Lobby_Manager;
+	}
+
+
 	if (_state != LCondition_State::FINISHL)
 	{
 		return this;
