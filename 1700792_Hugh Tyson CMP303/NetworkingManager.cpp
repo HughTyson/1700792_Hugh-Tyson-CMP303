@@ -4,7 +4,7 @@
 
 NetworkingManager::NetworkingManager() : network_thread(&server)
 {
-	updateTick = 0.5;
+	updateTick = 0.02;
 	sl_message.start_game = false;
 
 	player_info[0].player_number = 0;
@@ -30,13 +30,28 @@ void NetworkingManager::server_init()
 	server_running = true;
 	network_thread.launch();
 
-	connect_player();
+	connect_player(true);
 }
 
-bool NetworkingManager::connect_player()
+bool NetworkingManager::connect_player(bool host)
 {
-	
-	sf::Socket::Status status = connector.connect("localhost", port);
+	sf::Socket::Status status;
+	if (host)
+	{
+		status = connector.connect("localhost", port);
+
+		std::cout << ip.getLocalAddress() << std::endl;
+	}
+	else if (!host)
+	{
+		std::cout << "Please enter ip of server oyu wish to join" << std::endl;
+		std::cin >> connecting_ip;
+
+		ip = connecting_ip;
+
+		status = connector.connect(ip, port);
+	}
+
 
 	if (status != sf::Socket::Done)
 	{
@@ -150,7 +165,7 @@ bool NetworkingManager::client_recive()
 
 				if (sl_message.start_game == true)
 				{
-						player_clock.restart();
+						game_time.restart();
 				}
 
 				return sl_message.start_game;
@@ -171,7 +186,7 @@ bool NetworkingManager::client_recive()
 					player_info[i].mouse_pos.x = sg_message.mouse_pos_x[i];
 					player_info[i].mouse_pos.y = sg_message.mouse_pos_y[i];
 
-					offset_time = sg_message.sent_time - player_clock.getElapsedTime().asSeconds();
+					offset_time = sg_message.sent_time - game_time.getElapsedTime().asSeconds();
 
 					player_info[i].last_time = sg_message.sent_time - offset_time;
 

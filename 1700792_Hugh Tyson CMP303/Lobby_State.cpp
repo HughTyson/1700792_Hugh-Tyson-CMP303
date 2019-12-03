@@ -102,11 +102,11 @@ void Lobby_State::Client_Update(LobbyCondition_State & lobby_change)
 		game_system->network_->player_clock.restart();
 		game_system->network_->lobby_update(ready, exit);
 	
-		data.start_game = game_system->network_->client_recive();
+		
 
 	}		
 
-
+	data.start_game = game_system->network_->client_recive();
 	if (exit == true || game_system->network_->get_connected() == false)
 	{
 		state_ = EXIT_SERVER;

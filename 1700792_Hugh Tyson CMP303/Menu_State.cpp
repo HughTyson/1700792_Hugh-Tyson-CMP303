@@ -399,7 +399,7 @@ void Menu_State::JoinServer(MCondition_State & menu_change)
 	{
 		if (game_system->input_->isMouseLeftDown() == true) 
 		{
-			if (game_system->network_->connect_player())
+			if (game_system->network_->connect_player(false))
 			{
 				menu_change = FINISH_NETWORK;
 			}

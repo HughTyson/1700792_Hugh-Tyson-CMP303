@@ -257,22 +257,23 @@ void Level1_State::Sound_Init()
 void Level1_State::Player_Update(float deltatime)
 {
 
+	current_player = game_system->network_->getClientNumber();
+
 	if (Vector::magnitude(player[game_system->network_->getClientNumber()].getVelocity()) < 10.f && player[game_system->network_->getClientNumber()].getHit() == true)
 	{
-		player[game_system->network_->getClientNumber()].setHit(false);
-		current_player++;
-		
+		player[current_player].setHit(false);
+
 	}
 	
 
 
 
-	//if (Vector::magnitude(player[current_player].getVelocity()) < 10.f && player[current_player].getHit() == true)
-	//{
-	//	player[current_player].setHit(false);
-	//	current_player++;
+	if (Vector::magnitude(player[current_player].getVelocity()) < 10.f && player[current_player].getHit() == true)
+	{
+		player[current_player].setHit(false);
+		current_player++;
 
-	//}
+	}
 
 	//if (current_player == amount_of_players)
 	//{	
@@ -362,8 +363,14 @@ void Level1_State::Object_Clean_Up()
 
 void Level1_State::NetworkingUpdate(float deltatime)
 {
+	float timeSinceLastUpdate = game_system->network_->player_clock.getElapsedTime().asSeconds();
 
-	game_system->network_->game_update();
+	if (timeSinceLastUpdate >= game_system->network_->updateTick)
+	{
+		game_system->network_->player_clock.restart();
+		game_system->network_->game_update();
+	}
+	
 	level_finished = game_system->network_->client_recive();
 
 
@@ -399,27 +406,26 @@ void Level1_State::NetworkingMouseUpdate(float deltatime)
 		const PlayerInfo& msg1 = game_system->network_->messages[size - 2];
 		const PlayerInfo& msg2 = game_system->network_->messages[size - 3];
 		
-		//sf::Vector2f velocity_a(msg0.mouse_pos.x - msg1.mouse_pos.x, msg0.mouse_pos.y - msg1.mouse_pos.y);
-		//sf::Vector2f velocity_b(msg1.mouse_pos.x - msg2.mouse_pos.x, msg1.mouse_pos.y - msg2.mouse_pos.y);
+		sf::Vector2f velocity_a(msg0.mouse_pos.x - msg1.mouse_pos.x, msg0.mouse_pos.y - msg1.mouse_pos.y);
+		sf::Vector2f velocity_b(msg1.mouse_pos.x - msg2.mouse_pos.x, msg1.mouse_pos.y - msg2.mouse_pos.y);
 
-		x_change = msg0.mouse_pos.x - msg1.mouse_pos.x;
-		y_change = msg0.mouse_pos.y - msg1.mouse_pos.y;
+		//x_change = msg0.mouse_pos.x - msg1.mouse_pos.x;
+		//y_change = msg0.mouse_pos.y - msg1.mouse_pos.y;
 
-
-		float time_diff = game_system->network_->player_clock.getElapsedTime().asSeconds() - msg0.last_time; //find latency by calculating difference in the local clock and the networck clock
+		float time_diff = game_system->network_->game_time.getElapsedTime().asSeconds() - msg0.last_time; //find latency by calculating difference in the local clock and the networck clock
 		
-		x_change /= time_diff;
-		y_change /= time_diff;
+		//x_change /= time_diff;
+		//y_change /= time_diff;
 
-		predictedX = msg0.mouse_pos.x + (time_diff * x_change);
-		predictedY = msg0.mouse_pos.y + (time_diff * y_change);
+		//predictedX = msg0.mouse_pos.x + (time_diff * x_change);
+		//predictedY = msg0.mouse_pos.y + (time_diff * y_change);
 																											 
-		//float time_ = msg0.last_time - msg1.last_time;
+		float time_ = msg0.last_time - msg1.last_time;
 
-		//sf::Vector2f acceleration = (velocity_b - velocity_a) / time_;
+		sf::Vector2f acceleration = (velocity_b - velocity_a) / time_;
 
-		//predictedX = msg0.mouse_pos.x + (velocity_a.x*time_diff) + (0.5*acceleration.x*pow(time_diff, 2));
-		//predictedY = msg0.mouse_pos.y + (velocity_a.y*time_diff) + (0.5*acceleration.y*pow(time_diff, 2));
+		predictedX = msg0.mouse_pos.x + (velocity_a.x*time_diff) + (0.5*acceleration.x*pow(time_diff, 2));
+		predictedY = msg0.mouse_pos.y + (velocity_a.y*time_diff) + (0.5*acceleration.y*pow(time_diff, 2));
 
 		//predictedX = lerp(second_cursor->getPosition().x, predictedX, (game_system->network_->offset_time));
 		//predictedY = lerp(second_cursor->getPosition().y, predictedY, (game_system->network_->offset_time));
@@ -431,7 +437,6 @@ void Level1_State::NetworkingMouseUpdate(float deltatime)
 		second_cursor->update(deltatime, game_system->input_, game_system->network_->player_info[other_player].mouse_pos.x, game_system->network_->player_info[other_player].mouse_pos.y);
 	}
 
-	
 
 	game_system->network_->player_info[game_system->network_->getClientNumber()].mouse_pos = sf::Vector2f(game_system->cursor_->getPosition().x, game_system->cursor_->getPosition().y);
 

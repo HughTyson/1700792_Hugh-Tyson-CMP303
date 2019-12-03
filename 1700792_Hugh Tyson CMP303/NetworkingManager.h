@@ -39,7 +39,7 @@ public:
 	bool getServerRunning() { return server_running; }	
 	
 	//functions for client to server
-	bool connect_player();
+	bool connect_player(bool host);
 
 	std::vector<PlayerInfo> messages;
 
@@ -49,6 +49,8 @@ public:
 
 	sf::Clock player_clock;	
 	float updateTick;
+
+	sf::Clock game_time;
 	float offset_time;
 	
 
@@ -59,6 +61,9 @@ protected:
 	int other_number;
 	int players_connected;
 	sf::Thread network_thread;
+
+	std::string connecting_ip;
+
 	sf::IpAddress ip;
 	bool server_running = false;
 	bool connected = false;

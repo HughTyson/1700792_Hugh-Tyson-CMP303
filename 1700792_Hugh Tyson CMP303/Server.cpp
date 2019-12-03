@@ -41,7 +41,7 @@ Server::Server()
 		just_joined[i] = false;
 	}
 
-	clientUpdateTime = 0.5;
+	clientUpdateTime = 0.02;
 	finish_game = false;
 
 
@@ -220,8 +220,6 @@ void Server::SendMessage()
 			send_packet.clear();
 		}
 	}
-	
-
 }
 
 void Server::updateServer()
