@@ -1,3 +1,16 @@
-﻿  NetworkingManager.cpp
-c:\users\amg\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\networkingmanager.cpp(7): warning C4305: '=': truncation from 'double' to 'float'
+﻿  Level1_State.cpp
+c:\users\amg\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(108): warning C4018: '<': signed/unsigned mismatch
+c:\users\amg\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(299): warning C4018: '<': signed/unsigned mismatch
+c:\users\amg\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(423): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\amg\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(424): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\amg\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(429): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\amg\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(433): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\amg\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(393): warning C4101: 'predicted_y': unreferenced local variable
+c:\users\amg\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(390): warning C4101: 'x_change': unreferenced local variable
+c:\users\amg\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(392): warning C4101: 'predicted_x': unreferenced local variable
+c:\users\amg\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(391): warning C4101: 'y_change': unreferenced local variable
   1700792_Hugh Tyson CMP303.vcxproj -> C:\Users\amg\Documents\GitHub\1700792_Hugh-Tyson-CMP303\Debug\1700792_Hugh Tyson CMP303.exe

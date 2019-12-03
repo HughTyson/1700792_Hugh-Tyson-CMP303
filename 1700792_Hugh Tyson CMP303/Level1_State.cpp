@@ -214,7 +214,7 @@ void Level1_State::Sprite_Init()
 		second_cursor->setInput(game_system->input_);
 		game_system->window_->setMouseCursorVisible(false);
 
-		temp_player.setPosition(game_system->network_->player_info[game_system->network_->getClientNumber()].ball_position);
+		temp_player.setPosition(game_system->network_->player_info[other_player].ball_position);
 		temp_player.setSize(sf::Vector2f(18, 18));
 		temp_player.setCollisionBox(0, 0, 18, 18);
 		temp_player.setOrigin(sf::Vector2f(0, 0));
@@ -262,11 +262,7 @@ void Level1_State::Player_Update(float deltatime)
 	if (Vector::magnitude(player[game_system->network_->getClientNumber()].getVelocity()) < 10.f && player[game_system->network_->getClientNumber()].getHit() == true)
 	{
 		player[current_player].setHit(false);
-
 	}
-	
-
-
 
 	if (Vector::magnitude(player[current_player].getVelocity()) < 10.f && player[current_player].getHit() == true)
 	{
