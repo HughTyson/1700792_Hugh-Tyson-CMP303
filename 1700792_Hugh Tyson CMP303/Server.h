@@ -97,6 +97,7 @@ private:
 	bool just_joined[2];
 
 	float m_Time;
+	bool player1_shot = true;
 
 };
 

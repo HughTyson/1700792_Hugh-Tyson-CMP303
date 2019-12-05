@@ -64,25 +64,21 @@ sf::Packet Packets::sendClientGameData(Client_InGame_Message cg)
 
 Client_InGame_Message Packets::recieveClientInGameData(sf::Packet temp_packet, Client_InGame_Message cg)
 {
-	
 	temp_packet >> cg.type >> cg.sent_time >> cg.player_number >> cg.mouse_pos_x >> cg.mouse_pos_y >> cg.ball_pos_x >> cg.ball_pos_y >> cg.strokes >> cg.complete;
 	return cg;
 }
-
-
 
 sf::Packet Packets::sendServerGameData(Server_InGame_Message sg)
 {
 	send_packet.clear();
 
-	return send_packet << sg.type << sg.sent_time << sg.player_number[0] << sg.ball_pos_x[0] << sg.ball_pos_y[0] << sg.mouse_pos_x[0] << sg.mouse_pos_y[0] << sg.strokes[0] 
+	return send_packet << sg.type << sg.sent_time << sg.player_number[0] << sg.ball_pos_x[0] << sg.ball_pos_y[0] << sg.mouse_pos_x[0] << sg.mouse_pos_y[0] << sg.strokes[0]
 		<< sg.player_number[1] << sg.ball_pos_x[1] << sg.ball_pos_y[1] << sg.mouse_pos_x[1] << sg.mouse_pos_y[1] << sg.strokes[1]
 		<< sg.game_complete;
 }
 
 Server_InGame_Message Packets::recieveServerInGameData(sf::Packet temp_packet, Server_InGame_Message sg)
 {
-
 	temp_packet >> sg.type >> sg.sent_time >> sg.player_number[0] >> sg.ball_pos_x[0] >> sg.ball_pos_y[0] >> sg.mouse_pos_x[0] >> sg.mouse_pos_y[0] >> sg.strokes[0]
 		>> sg.player_number[1] >> sg.ball_pos_x[1] >> sg.ball_pos_y[1] >> sg.mouse_pos_x[1] >> sg.mouse_pos_y[1] >> sg.strokes[1]
 		>> sg.game_complete;

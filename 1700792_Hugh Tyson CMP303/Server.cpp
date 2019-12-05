@@ -41,7 +41,7 @@ Server::Server()
 		just_joined[i] = false;
 	}
 
-	clientUpdateTime = 0.02;
+	clientUpdateTime = 0.1;
 	finish_game = false;
 
 
@@ -142,6 +142,7 @@ void Server::RecieveMessage()
 						clientInfo[i]->ball_pos = sf::Vector2f(cg_message.ball_pos_x, cg_message.ball_pos_y);
 						clientInfo[i]->strokes = cg_message.strokes;
 						clientInfo[i]->level_complete = cg_message.complete;
+						
 					}
 					break;
 				}
@@ -207,9 +208,8 @@ void Server::SendMessage()
 
 				sg_message.strokes[i] = clientInfo[i]->strokes;
 
+	
 				sg_message.sent_time = gameTime.getElapsedTime().asSeconds();
-
-				//std::cout << "Here" << std::endl;
 			}
 
 			sf::Packet send_packet;
@@ -252,6 +252,9 @@ void Server::updateServer()
 	}
 	else if (_state == SERVER_GAME)
 	{
+
+		//std::cout << clientInfo[0]->can_hit << std::endl;
+		//std::cout << clientInfo[1]->can_hit << std::endl;
 
 	}
 }

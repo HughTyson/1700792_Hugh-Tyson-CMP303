@@ -42,6 +42,8 @@ void Level1_State::OnEnter()
 	}
 
 	level_finished = false;
+
+	ball_movement_type = POSITION;
 }
 
 void Level1_State::OnExit()
@@ -68,9 +70,9 @@ void Level1_State::Update(float deltatime, LCondition_State & level_change)
 		}
 			
 
-		//Player_Update(deltatime);
+		Player_Update(deltatime);
 
-		//Collisions(deltatime);
+		Collisions(deltatime);
 
 		
 	}
@@ -105,10 +107,13 @@ void Level1_State::Draw()
 	
 	game_system->tileMap.render(game_system->window_);
 
-	for (int i = 0; i < player.size(); i++)
-	{
-		game_system->window_->draw(player[i]);
-	}
+	//for (int i = 0; i < player.size(); i++)
+	//{
+	//	game_system->window_->draw(player[i]);
+	//}
+
+	game_system->window_->draw(player[0]);
+	game_system->window_->draw(player[1]);
 	
 	game_system->window_->draw(hole);
 
@@ -145,131 +150,47 @@ void Level1_State::Inputs()
 		game_system->window_->close();//closes the game
 	}
 
-}
-
-void Level1_State::Sprite_Init()
-{
-
-	//Setting all the variables for the first players ball
-	ballTexture1.loadFromFile("gfx/Ball.png");
-	ballTexture1.setSmooth(true);
-
-	temp_player.setTexture(&ballTexture1);
-	temp_player.setSize(sf::Vector2f(18, 18));
-	temp_player.setPosition(90, 500);
-	temp_player.setInput(game_system->input_);
-	temp_player.setCollisionBox(0, 0, 18, 18);
-	temp_player.setOrigin(sf::Vector2f(0, 0));
-	temp_player.setVelocity(0, 0);
-
-	player.push_back(temp_player);
-
-	temp_arrow.setTexture(&arrowTexture);
-	temp_arrow.setSize(sf::Vector2f(20, 20));
-	temp_arrow.setPosition(0, 0);
-	temp_player.setOrigin(sf::Vector2f(0, 0));
-
-//	arrow.push_back(temp_player);
-
-
-	//an if statement that is used for any sprites that get declared if the game is multiplayer
-	if (local_multiplayer == true)
+	
+	if (game_system->input_->isKeyDown(sf::Keyboard::Num1))
 	{
-		//Setting all the variables for the first players ball
-		temp_player.setPosition(457, 500);
-		temp_player.setFillColor(sf::Color::Blue);
-		player.push_back(temp_player);
-
-		amount_of_players = 2;
-
-		player2text.setFont(*game_system->font_);
-		player2text.setCharacterSize(24);
-		player2text.setPosition(600, 0);
-
-		whatPlayer.setFont(*game_system->font_);
-		whatPlayer.setCharacterSize(32);
-		whatPlayer.setPosition(280, 0);
+		ball_movement_type = POSITION;
 	}
-	player1text.setFont(*game_system->font_);
-	player1text.setCharacterSize(24);
 
-	amount_of_players = player.size();
-
-	//defining the hole
-
-	hole_texture.loadFromFile("gfx/GolfHole.png");
-	hole.setTexture(&hole_texture);
-	hole.setSize(sf::Vector2f(32, 32));
-	hole.setOrigin(sf::Vector2f(0, 0));
-	hole.setCollisionBox(2, 2, 25, 25);
-	hole.setPosition(670, 96);
-
-	if (online_multiplayer)
+	if (game_system->input_->isKeyDown(sf::Keyboard::Num2))
 	{
-		second_cursor = new Cursor;
-		cursor_tex.loadFromFile("gfx/Mousebobanimation.png");
-		second_cursor->setTexture(&cursor_tex);
-		second_cursor->setCollisionBox(0, 0, 32, 32);
-		second_cursor->setSize(sf::Vector2f(32, 32));
-		second_cursor->setInput(game_system->input_);
-		game_system->window_->setMouseCursorVisible(false);
-
-		temp_player.setPosition(game_system->network_->player_info[other_player].ball_position);
-		temp_player.setSize(sf::Vector2f(18, 18));
-		temp_player.setCollisionBox(0, 0, 18, 18);
-		temp_player.setOrigin(sf::Vector2f(0, 0));
-		temp_player.setVelocity(0, 0);
-
-		player.push_back(temp_player);
+		ball_movement_type = PREDICTION;
 	}
+
+	if (game_system->input_->isKeyDown(sf::Keyboard::Num3))
+	{
+		ball_movement_type = VELOCITY;
+	}
+
 }
 
-void Level1_State::Map_Init()
-{
-	// Map dimensions
-	sf::Vector2u mapSize(13, 10);
 
-	std::vector<int> map = {
-		17, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 17,
-		17, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 17,
-		17, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 17,
-		17, 0, 0, 0, 17, 0, 0, 0,17, 0, 0, 0, 17,
-		17, 0, 0, 0, 17, 0, 0, 0, 17, 0, 0, 0, 17,
-		17, 0, 0, 0, 17, 0, 0, 0, 17, 0, 0, 0, 17,
-		17, 0, 0, 0, 17, 0, 0, 0, 17, 0, 0, 0, 17,
-		17, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 17,
-		17, 5, 5, 5, 17, 0, 0, 0, 0, 0, 0, 0, 17,
-		17, 8, 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 17,
-	};
-
-	game_system->tileMap.setTileMap(map, mapSize);
-	game_system->tileMap.setPosition(sf::Vector2f(0, 0));
-	game_system->tileMap.buildLevel();
-
-	world = game_system->tileMap.getLevel();
-}
-
-void Level1_State::Sound_Init()
-{
-	game_system->audio_->addSound("sfx/GolfPutt.ogg", "Menu");
-}
 
 void Level1_State::Player_Update(float deltatime)
 {
 
 	current_player = game_system->network_->getClientNumber();
 
-	if (Vector::magnitude(player[game_system->network_->getClientNumber()].getVelocity()) < 10.f && player[game_system->network_->getClientNumber()].getHit() == true)
+	if (Vector::magnitude(player[game_system->network_->getClientNumber()].getVelocity()) < 10.f && player[game_system->network_->getClientNumber()].getHit() == false)
 	{
 		player[current_player].setHit(false);
 	}
 
-	if (Vector::magnitude(player[current_player].getVelocity()) < 10.f && player[current_player].getHit() == true)
-	{
-		player[current_player].setHit(false);
-		current_player++;
 
-	}
+	//if (Vector::magnitude(player[current_player].getVelocity()) < 10.f && player[current_player].getHit() == true)
+	//{
+	//	player[current_player].setHit(false);
+	//	pl
+	//	current_player++;
+	//}
+
+
+
+
 
 	//if (current_player == amount_of_players)
 	//{	
@@ -286,8 +207,9 @@ void Level1_State::Player_Update(float deltatime)
 	//	}
 	//}
 
-	//player[current_player].update(deltatime, game_system->getMouseX(), game_system->getMouseY(), game_system->window_);
+	player[current_player].update(deltatime, game_system->getMouseX(), game_system->getMouseY(), game_system->window_);
 
+	
 	hole.Update(deltatime);
 }
 
@@ -346,17 +268,6 @@ void Level1_State::Pause_Update(LCondition_State & menu_change)
 
 
 
-void Level1_State::Object_Clean_Up()
-{
-
-	world->clear();
-	world = NULL;
-
-	player.clear();
-	
-
-}
-
 void Level1_State::NetworkingUpdate(float deltatime)
 {
 	float timeSinceLastUpdate = game_system->network_->player_clock.getElapsedTime().asSeconds();
@@ -375,11 +286,69 @@ void Level1_State::NetworkingUpdate(float deltatime)
 	//	state_ = FINISHL_SERVER;
 	//}
 
+	NetworkingPlayerUpdate(deltatime);
 	NetworkingMouseUpdate(deltatime);
 }
 
-void Level1_State::NetworkingPlayerUpdate()
+void Level1_State::NetworkingPlayerUpdate(float deltatime)
 {
+	float predictedX;
+	float predictedY;
+	float x_change;
+	float y_change;
+	float predicted_x;
+	float predicted_y;
+
+	if (ball_movement_type == POSITION)
+	{
+		player[other_player].setPosition(sf::Vector2f(game_system->network_->player_info[other_player].ball_position));
+	}
+	else if (ball_movement_type == PREDICTION)
+	{
+		int size = game_system->network_->messages.size();
+
+		if (size > 3)
+		{
+			const PlayerInfo& msg0 = game_system->network_->messages[size - 1];
+			const PlayerInfo& msg1 = game_system->network_->messages[size - 2];
+			const PlayerInfo& msg2 = game_system->network_->messages[size - 3];
+
+			sf::Vector2f velocity_a(msg0.ball_position.x - msg1.ball_position.x, msg0.ball_position.y - msg1.ball_position.y);
+			sf::Vector2f velocity_b(msg1.ball_position.x - msg2.ball_position.x, msg1.ball_position.y - msg2.ball_position.y);
+
+			//x_change = msg0.mouse_pos.x - msg1.mouse_pos.x;
+			//y_change = msg0.mouse_pos.y - msg1.mouse_pos.y;
+
+			float time_diff = game_system->network_->game_time.getElapsedTime().asSeconds() - msg0.last_time; //find latency by calculating difference in the local clock and the networck clock
+
+			//x_change /= time_diff;
+			//y_change /= time_diff;
+
+			//predictedX = msg0.mouse_pos.x + (time_diff * x_change);
+			//predictedY = msg0.mouse_pos.y + (time_diff * y_change);
+
+			float time_ = msg0.last_time - msg1.last_time;
+
+			sf::Vector2f acceleration = (velocity_b - velocity_a) / time_;
+
+			predictedX = msg0.mouse_pos.x + (velocity_a.x*time_diff) + (0.5*acceleration.x*pow(time_diff, 2));
+			predictedY = msg0.mouse_pos.y + (velocity_a.y*time_diff) + (0.5*acceleration.y*pow(time_diff, 2));
+
+			predictedX = lerp(second_cursor->getPosition().x, predictedX, (game_system->network_->offset_time));
+			predictedY = lerp(second_cursor->getPosition().y, predictedY, (game_system->network_->offset_time));
+
+			second_cursor->update(deltatime, game_system->input_, predictedX, predictedY);
+			//second_cursor->update(deltatime, game_system->input_, msg0.mouse_pos.x, msg0.mouse_pos.y);
+		}
+		else
+		{
+			second_cursor->update(deltatime, game_system->input_, game_system->network_->player_info[other_player].mouse_pos.x, game_system->network_->player_info[other_player].mouse_pos.y);
+		}
+
+	}
+
+	game_system->network_->player_info[game_system->network_->getClientNumber()].ball_position = sf::Vector2f(player[current_player].getPosition());
+
 }
 
 void Level1_State::NetworkingMouseUpdate(float deltatime)
@@ -405,17 +374,8 @@ void Level1_State::NetworkingMouseUpdate(float deltatime)
 		sf::Vector2f velocity_a(msg0.mouse_pos.x - msg1.mouse_pos.x, msg0.mouse_pos.y - msg1.mouse_pos.y);
 		sf::Vector2f velocity_b(msg1.mouse_pos.x - msg2.mouse_pos.x, msg1.mouse_pos.y - msg2.mouse_pos.y);
 
-		//x_change = msg0.mouse_pos.x - msg1.mouse_pos.x;
-		//y_change = msg0.mouse_pos.y - msg1.mouse_pos.y;
-
 		float time_diff = game_system->network_->game_time.getElapsedTime().asSeconds() - msg0.last_time; //find latency by calculating difference in the local clock and the networck clock
-		
-		//x_change /= time_diff;
-		//y_change /= time_diff;
-
-		//predictedX = msg0.mouse_pos.x + (time_diff * x_change);
-		//predictedY = msg0.mouse_pos.y + (time_diff * y_change);
-																											 
+																							 
 		float time_ = msg0.last_time - msg1.last_time;
 
 		sf::Vector2f acceleration = (velocity_b - velocity_a) / time_;
@@ -423,25 +383,145 @@ void Level1_State::NetworkingMouseUpdate(float deltatime)
 		predictedX = msg0.mouse_pos.x + (velocity_a.x*time_diff) + (0.5*acceleration.x*pow(time_diff, 2));
 		predictedY = msg0.mouse_pos.y + (velocity_a.y*time_diff) + (0.5*acceleration.y*pow(time_diff, 2));
 
-		//predictedX = lerp(second_cursor->getPosition().x, predictedX, (game_system->network_->offset_time));
-		//predictedY = lerp(second_cursor->getPosition().y, predictedY, (game_system->network_->offset_time));
+		//predictedX = lerp(second_cursor->getPosition().x, predictedX, msg0.last_time + time_diff);
+		//predictedY = lerp(second_cursor->getPosition().y, predictedY, msg0.last_time + time_diff);
+
+		std::cout << predictedX << std::endl;
 
 		second_cursor->update(deltatime, game_system->input_, predictedX, predictedY);
+		
 	}
 	else
 	{
 		second_cursor->update(deltatime, game_system->input_, game_system->network_->player_info[other_player].mouse_pos.x, game_system->network_->player_info[other_player].mouse_pos.y);
 	}
 
-
+	//uppdate this clients info to be sent to the server
 	game_system->network_->player_info[game_system->network_->getClientNumber()].mouse_pos = sf::Vector2f(game_system->cursor_->getPosition().x, game_system->cursor_->getPosition().y);
 
-	//std::cout << game_system->network_->player_info[other_player].ball_position.x << " , " << game_system->network_->player_info[other_player].ball_position.y << std::endl;
-	//game_system->network_->player_info[clien]
-}
 
+}
 
 float Level1_State::lerp(float a, float b, float t)
 {
 	return a+t*(b-a);
+}
+
+void Level1_State::Object_Clean_Up()
+{
+
+	world->clear();
+	world = NULL;
+
+	player.clear();
+	
+
+}
+
+void Level1_State::Sprite_Init()
+{
+
+	//Setting all the variables for the first players ball
+	ballTexture1.loadFromFile("gfx/Ball.png");
+	ballTexture1.setSmooth(true);
+
+	temp_player.setTexture(&ballTexture1);
+	temp_player.setSize(sf::Vector2f(18, 18));
+	temp_player.setPosition(game_system->network_->player_info[0].ball_position);
+	temp_player.setInput(game_system->input_);
+	temp_player.setCollisionBox(0, 0, 18, 18);
+	temp_player.setOrigin(sf::Vector2f(0, 0));
+	temp_player.setVelocity(0, 0);
+
+	player.push_back(temp_player);
+
+	temp_arrow.setTexture(&arrowTexture);
+	temp_arrow.setSize(sf::Vector2f(20, 20));
+	temp_arrow.setPosition(0, 0);
+	temp_player.setOrigin(sf::Vector2f(0, 0));
+
+//	arrow.push_back(temp_player);
+
+
+	//an if statement that is used for any sprites that get declared if the game is multiplayer
+	if (local_multiplayer == true)
+	{
+		//Setting all the variables for the first players ball
+		temp_player.setPosition(457, 500);
+		temp_player.setFillColor(sf::Color::Blue);
+		player.push_back(temp_player);
+
+		amount_of_players = 2;
+
+		player2text.setFont(*game_system->font_);
+		player2text.setCharacterSize(24);
+		player2text.setPosition(600, 0);
+
+		whatPlayer.setFont(*game_system->font_);
+		whatPlayer.setCharacterSize(32);
+		whatPlayer.setPosition(280, 0);
+	}
+	player1text.setFont(*game_system->font_);
+	player1text.setCharacterSize(24);
+
+	amount_of_players = player.size();
+
+	//defining the hole
+
+	hole_texture.loadFromFile("gfx/GolfHole.png");
+	hole.setTexture(&hole_texture);
+	hole.setSize(sf::Vector2f(32, 32));
+	hole.setOrigin(sf::Vector2f(0, 0));
+	hole.setCollisionBox(2, 2, 25, 25);
+	hole.setPosition(670, 96);
+
+	if (online_multiplayer)
+	{
+		second_cursor = new Cursor;
+		cursor_tex.loadFromFile("gfx/Mousebobanimation.png");
+		second_cursor->setTexture(&cursor_tex);
+		second_cursor->setCollisionBox(0, 0, 32, 32);
+		second_cursor->setSize(sf::Vector2f(32, 32));
+		second_cursor->setInput(game_system->input_);
+		game_system->window_->setMouseCursorVisible(false);
+
+		temp_player.setPosition(game_system->network_->player_info[1].ball_position);
+		temp_player.setTexture(&ballTexture1);
+		temp_player.setSize(sf::Vector2f(18, 18));
+		temp_player.setCollisionBox(0, 0, 18, 18);
+		temp_player.setOrigin(sf::Vector2f(0, 0));
+		temp_player.setVelocity(0, 0);
+
+		player.push_back(temp_player);
+	}
+}
+
+void Level1_State::Map_Init()
+{
+	// Map dimensions
+	sf::Vector2u mapSize(13, 10);
+
+	std::vector<int> map = {
+		17, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 17,
+		17, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 17,
+		17, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 17,
+		17, 0, 0, 0, 17, 0, 0, 0,17, 0, 0, 0, 17,
+		17, 0, 0, 0, 17, 0, 0, 0, 17, 0, 0, 0, 17,
+		17, 0, 0, 0, 17, 0, 0, 0, 17, 0, 0, 0, 17,
+		17, 0, 0, 0, 17, 0, 0, 0, 17, 0, 0, 0, 17,
+		17, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 17,
+		17, 5, 5, 5, 17, 0, 0, 0, 0, 0, 0, 0, 17,
+		17, 8, 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 17,
+	};
+
+	game_system->tileMap.setTileMap(map, mapSize);
+	game_system->tileMap.setPosition(sf::Vector2f(0, 0));
+	game_system->tileMap.buildLevel();
+
+	world = game_system->tileMap.getLevel();
+}
+
+void Level1_State::Sound_Init()
+{
+	game_system->audio_->addSound("sfx/GolfPutt.ogg", "Menu");
 }

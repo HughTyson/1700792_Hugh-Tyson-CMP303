@@ -11,9 +11,11 @@ struct PlayerInfo
 	int player_number;
 	sf::Vector2f mouse_pos;
 	sf::Vector2f ball_position;
+	sf::Vector2f ball_velocity;
 	int strokes;
 	bool level_complete;
 	float last_time;
+
 };
 
 class NetworkingManager

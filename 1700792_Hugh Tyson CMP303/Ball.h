@@ -22,6 +22,8 @@ public:
 	bool getHit();
 	inline void setHit(bool ht) { hit = ht; }
 
+
+
 private:
 
 	//functions used to calculate the direction and velocity of th ball

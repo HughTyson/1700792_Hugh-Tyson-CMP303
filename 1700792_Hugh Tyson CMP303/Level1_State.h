@@ -10,6 +10,11 @@ enum LCondition_State
 	READYL, CONTINUEL, ENDL, PAUSEL, FINISHL, FINISHL_SERVER
 };
 
+enum Movement_Type
+{
+	POSITION, PREDICTION, VELOCITY
+};
+
 class Level1_State
 {
 public:
@@ -45,7 +50,7 @@ public:
 	//functions used for networking
 
 	void NetworkingUpdate(float deltatime);
-	void NetworkingPlayerUpdate();
+	void NetworkingPlayerUpdate(float deltatime);
 	void NetworkingMouseUpdate(float deltatime);
 
 	
@@ -93,6 +98,8 @@ private:
 	bool level_finished;
 
 	int other_player;
+
+	int ball_movement_type;
 
 
 };

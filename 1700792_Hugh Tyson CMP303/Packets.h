@@ -45,6 +45,9 @@ struct Client_InGame_Message : Message
 	float ball_pos_y;
 	int strokes;
 	bool complete;
+	
+	float velocity_x;
+	float velocity_y;
 };
 
 struct Server_InGame_Message : Message
@@ -58,6 +61,7 @@ struct Server_InGame_Message : Message
 	int strokes[2];
 
 	bool game_complete;
+	
 
 };
 
