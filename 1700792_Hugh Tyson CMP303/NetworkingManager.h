@@ -6,6 +6,7 @@
 #include "Packets.h"
 #include <vector>
 
+//struct to hold all palyer informations
 struct PlayerInfo
 {
 	int player_number;
@@ -26,7 +27,7 @@ public:
 	NetworkingManager();
 	~NetworkingManager();
 
-	PlayerInfo player_info[2];
+	PlayerInfo player_info[2]; //two instances of player info struct
 
 	void server_init();
 

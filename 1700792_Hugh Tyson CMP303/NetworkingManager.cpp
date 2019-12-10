@@ -43,7 +43,7 @@ void NetworkingManager::server_init()
 bool NetworkingManager::connect_player(bool host)
 {
 	sf::Socket::Status status;
-	if (host) //if ocnnectio nis coming fro mpalyer to create server then just conenct ot hte local host
+	if (host) //if ocnnectio nis coming from palyer to create server then just conenct ot hte local host
 	{
 		status = connector.connect("localhost", port);
 
@@ -100,27 +100,22 @@ void NetworkingManager::AddMessage(const PlayerInfo & msg)
 	messages.push_back(msg); //add latest message to message vector
 }
 
-void NetworkingManager::host_disconnect()
-{
-}
-
 void NetworkingManager::ping_request()
 {
 
-	if (ping_clock.getElapsedTime().asSeconds() > 1)
+	if (ping_clock.getElapsedTime().asSeconds() > 1) //if a second has passed then send a ping request 
 	{
-		ping_clock.restart();
+		ping_clock.restart(); //restart ping calculation points
 		sf::Packet send_packet;
 		Packets packets;
-		incoming.type = m_Ping;
+		incoming.type = m_Ping; //set type of mesage being sent of type ping
 		incoming.sent_time = game_time.getElapsedTime().asSeconds();
 
-		send_packet = packets.sendPing(incoming);
+		send_packet = packets.sendPing(incoming); //send the packet
 	
 		connector.send(send_packet);
 		send_packet.clear();
 
-		//std::cout << "Time sent : " << incoming.sent_time << std::endl;
 	}
 	
 }
@@ -128,6 +123,7 @@ void NetworkingManager::ping_request()
 void NetworkingManager::cleanupgame()
 {
 	
+	//if leaivng the server reset all variables
 	player_info[0].ball_position = sf::Vector2f(90, 500);
 	player_info[0].ball_velocity = sf::Vector2f(0.f, 0.f);
 	player_info[0].mouse_pos = sf::Vector2f(0, 0);
@@ -146,7 +142,7 @@ void NetworkingManager::cleanupgame()
 void NetworkingManager::lobby_update(bool ready, bool exit)
 {
 
-	ping_request();
+	ping_request(); //request the ping
 	
 	//this function is used to send the server information about the clients lobby state
 
@@ -166,16 +162,18 @@ void NetworkingManager::lobby_update(bool ready, bool exit)
 	connector.send(send_packet);
 	send_packet.clear();
 
-	//std::cout << clients_number << std::endl;
-
 }
 
 void NetworkingManager::game_update()
 {
-	cg_message.type = m_Client_Game;
 
-	cg_message.player_number = clients_number;
+	ping_request(); //request the ping
 
+	cg_message.type = m_Client_Game; //message being sent is of type client game
+
+	cg_message.player_number = clients_number; //tell the serve hwat client this infomratio nis for
+
+	//senidng the players position/mouse positio/velocity/ angle of arrow/ if they have complete the level and if they are holding the mouse donw
 	cg_message.ball_pos_x = player_info[clients_number].ball_position.x;
 	cg_message.ball_pos_y = player_info[clients_number].ball_position.y;
 
@@ -189,16 +187,16 @@ void NetworkingManager::game_update()
 	cg_message.complete = player_info[clients_number].level_complete;
 
 	cg_message.angle = player_info[clients_number].angle;
-	std::cout << player_info[clients_number].is_hitting << std::endl;
+	
 	cg_message.is_hitting = player_info[clients_number].is_hitting;
 	
 
 	sf::Packet send_packet;
 	Packets packet;
 
-	send_packet = packet.sendClientGameData(cg_message);
+	send_packet = packet.sendClientGameData(cg_message); //pack the packet
 
-	connector.send(send_packet);
+	connector.send(send_packet); //send the packet
 	send_packet.clear();
 
 }
@@ -208,18 +206,18 @@ bool NetworkingManager::client_recive()
 {
 	Packets recieve_packet;
 
-	sf::Socket::Status status = connector.receive(recieve_packet);
+	sf::Socket::Status status = connector.receive(recieve_packet); //recieve a message on the TCP socket
 
-	if (status == sf::Socket::Status::Done)
+	if (status == sf::Socket::Status::Done) //if message has been recieved
 	{
-		incoming = recieve_packet.getType(recieve_packet, incoming);
+		incoming = recieve_packet.getType(recieve_packet, incoming); //check what type of message has been recieved
 
 		switch (incoming.type)
 		{
-			case m_Server_Lobby:
+			case m_Server_Lobby: //if the type is a lobby message
 			{
 				
-				sl_message = recieve_packet.recieveServerLobbyData(recieve_packet, sl_message);
+				sl_message = recieve_packet.recieveServerLobbyData(recieve_packet, sl_message); //get all data in the packet using the unpack function for lobby messages fro mthe server
 
 				player_info[sl_message.player_number].player_number = sl_message.player_number;
 
@@ -235,14 +233,16 @@ bool NetworkingManager::client_recive()
 					other_number = 0;
 				}
 
+				//if the serve has started the game then restart the game clock, and make sure all varibales being used in the game are cleaned up
+
 				if (sl_message.start_game == true)
 				{
 					game_time.restart();
 					cleanupgame();
-					//std::cout << game_time.getElapsedTime().asMilliseconds();
+					
 				}
 
-				return sl_message.start_game;
+				return sl_message.start_game; //return true or false if the game has been 
 
 				break;
 			}
@@ -250,7 +250,7 @@ bool NetworkingManager::client_recive()
 			{
 				sg_message = recieve_packet.recieveServerInGameData(recieve_packet, sg_message);
 
-				//std::cout << offset_time << std::endl;
+		
 
 				for (int i = 0; i < 2; i++)
 				{
@@ -265,7 +265,7 @@ bool NetworkingManager::client_recive()
 
 					player_info[i].angle = sg_message.angle[i];
 					player_info[i].is_hitting = sg_message.is_hitting[i];
-					//	std::cout << sg_message.is_hitting[i] << std::endl;
+			
 
 					player_info[i].last_time = sg_message.sent_time - ping/2;		
 				}
@@ -298,9 +298,6 @@ bool NetworkingManager::client_recive()
 				
 				ping = game_time.getElapsedTime().asSeconds() - incoming.sent_time;
 
-				//std::cout << "Time Recieved Server : " << incoming.sent_time << std::endl;
-
-				//std::cout << "Ping : " << ping << std::endl;
 			}
 			default:
 				break;
@@ -318,9 +315,6 @@ bool NetworkingManager::client_recive()
 
 	return false;
 
-	//std::cout << sl_message.player_number << std::endl;
-
-	
 }
 
 void NetworkingManager::disconnect()

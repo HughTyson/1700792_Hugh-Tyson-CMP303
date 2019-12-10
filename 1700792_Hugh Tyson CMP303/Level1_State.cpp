@@ -389,19 +389,12 @@ void Level1_State::NetworkingPlayerUpdate(float deltatime)
 			}
 			case VELOCITY:
 			{
+
 				player[other_player].move(msg0.ball_velocity * deltatime);
-
-				if (re_sync.getElapsedTime().asSeconds() > 4)
+				if (Vector::magnitude(player[other_player].getVelocity()) < 10)
 				{
-					re_sync.restart();
-					if ((player[other_player].getPosition().x != msg0.ball_position.x));
-					{
-						sf::Vector2f direction = sf::Vector2f(player[other_player].getPosition().x, player[other_player].getPosition().y) - sf::Vector2f(msg0.ball_position.x, msg0.ball_position.y);
-
-						player[other_player].move(direction * deltatime);
-					}
+					player[other_player].setPosition(game_system->network_->player_info[other_player].ball_position);
 				}
-					
 
 				break;
 			}
@@ -426,7 +419,6 @@ void Level1_State::NetworkingMouseUpdate(float deltatime)
 	float y_change;
 	float predicted_x;
 	float predicted_y;
-
 
 	 int size = game_system->network_->messages.size();
 

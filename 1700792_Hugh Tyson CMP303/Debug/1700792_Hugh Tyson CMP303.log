@@ -1,1 +1,60 @@
-﻿  1700792_Hugh Tyson CMP303.vcxproj -> C:\Users\amg\Documents\GitHub\1700792_Hugh-Tyson-CMP303\Debug\1700792_Hugh Tyson CMP303.exe
+﻿  GameState.cpp
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\networkingmanager.h(46): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+  Level1_State.cpp
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\networkingmanager.h(46): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(237): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(238): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(254): warning C4018: '<': signed/unsigned mismatch
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(382): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(383): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(334): warning C4101: 'predicted_y': unreferenced local variable
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(331): warning C4101: 'x_change': unreferenced local variable
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(333): warning C4101: 'predicted_x': unreferenced local variable
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(332): warning C4101: 'y_change': unreferenced local variable
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(436): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(449): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(466): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(467): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(469): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(421): warning C4101: 'predicted_y': unreferenced local variable
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(418): warning C4101: 'x_change': unreferenced local variable
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(420): warning C4101: 'predicted_x': unreferenced local variable
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(419): warning C4101: 'y_change': unreferenced local variable
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\level1_state.cpp(511): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Lobby_State.cpp
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\networkingmanager.h(46): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+  Main.cpp
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\networkingmanager.h(46): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+  Menu_State.cpp
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\networkingmanager.h(46): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\menu_state.cpp(93): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  NetworkingManager.cpp
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\networkingmanager.h(46): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\networkingmanager.cpp(7): warning C4305: '=': truncation from 'double' to 'float'
+  Packets.cpp
+  SceneApp.cpp
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\networkingmanager.h(46): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\sceneapp.cpp(30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\sceneapp.cpp(31): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\sceneapp.cpp(34): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\sceneapp.cpp(107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\sceneapp.cpp(108): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+  Select_Players_State.cpp
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\networkingmanager.h(46): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\select_players_state.cpp(81): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Server.cpp
+c:\users\admin\documents\github\1700792_hugh-tyson-cmp303\1700792_hugh tyson cmp303\server.cpp(46): warning C4305: '=': truncation from 'double' to 'float'
+  Generating Code...
+  1700792_Hugh Tyson CMP303.vcxproj -> C:\Users\admin\Documents\GitHub\1700792_Hugh-Tyson-CMP303\Debug\1700792_Hugh Tyson CMP303.exe

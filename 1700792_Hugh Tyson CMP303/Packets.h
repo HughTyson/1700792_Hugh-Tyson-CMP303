@@ -77,7 +77,7 @@ class Packets : public sf::Packet
 public:
 	Packets();
 	~Packets();
-	
+	//functions for sending data
 	sf::Packet sendPing(Message m);
 	sf::Packet sendInitialData(Initial_Connect i);
 	sf::Packet sendClientLobbyData(Client_Lobby_Message cl);
@@ -85,6 +85,7 @@ public:
 	sf::Packet sendClientGameData(Client_InGame_Message cg);
 	sf::Packet sendServerGameData(Server_InGame_Message sg);
 
+	//functions for recieving data
 	Message getType(sf::Packet, Message m);
 	Initial_Connect recieveInitialData(sf::Packet temp_pack, Initial_Connect i);
 	Client_Lobby_Message recieveClientLobbyData(sf::Packet temp_pack, Client_Lobby_Message cl);
