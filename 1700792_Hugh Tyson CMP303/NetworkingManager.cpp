@@ -25,7 +25,6 @@ NetworkingManager::NetworkingManager() : network_thread(&server)
 	player_info[1].angle = 0;
 	player_info[1].is_hitting = false;
 	
-
 	first_time = true;
 }
 
@@ -190,6 +189,7 @@ void NetworkingManager::game_update()
 	cg_message.complete = player_info[clients_number].level_complete;
 
 	cg_message.angle = player_info[clients_number].angle;
+	std::cout << player_info[clients_number].is_hitting << std::endl;
 	cg_message.is_hitting = player_info[clients_number].is_hitting;
 	
 
@@ -265,6 +265,7 @@ bool NetworkingManager::client_recive()
 
 					player_info[i].angle = sg_message.angle[i];
 					player_info[i].is_hitting = sg_message.is_hitting[i];
+					//	std::cout << sg_message.is_hitting[i] << std::endl;
 
 					player_info[i].last_time = sg_message.sent_time - ping/2;		
 				}

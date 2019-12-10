@@ -125,7 +125,6 @@ void Level1_State::Draw()
 	if (game_system->input_->isMouseLeftDown())
 	{
 		game_system->window_->draw(arrow[current_player]);
-		
 	}
 
 	if (game_system->network_->player_info[other_player].is_hitting == true)
@@ -133,7 +132,6 @@ void Level1_State::Draw()
 		game_system->window_->draw(arrow[other_player]);
 	}
 	
-
 	game_system->window_->draw(hole);
 
 	game_system->window_->draw(*game_system->cursor_);
@@ -404,8 +402,7 @@ void Level1_State::NetworkingPlayerUpdate(float deltatime)
 					}
 				}
 					
-					
-				
+
 				break;
 			}
 			default:

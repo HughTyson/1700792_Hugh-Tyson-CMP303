@@ -189,6 +189,7 @@ void Server::RecieveMessage()
 						clientInfo[i]->ball_velocity = sf::Vector2f(cg_message.velocity_x, cg_message.velocity_y);
 						clientInfo[i]->strokes = cg_message.strokes;
 						clientInfo[i]->angle = cg_message.angle;
+						clientInfo[i]->is_hitting = cg_message.is_hitting;
 						clientInfo[i]->level_complete = cg_message.complete;
 						
 					}
