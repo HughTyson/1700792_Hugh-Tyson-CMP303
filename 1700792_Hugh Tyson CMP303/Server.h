@@ -25,13 +25,17 @@ public:
 
 	bool player_ready;
 	bool player_exit;
+	
 
 	//game info
 
 	sf::Vector2f ball_pos;
 	sf::Vector2f mouse_pos;
+	sf::Vector2f ball_velocity;
 	int strokes;
 	bool level_complete;
+	float angle;
+	bool is_hitting;
 };
 
 class Server
@@ -44,7 +48,8 @@ public:
 	~Server();
 
 	void update();
-
+	void cleanupLobby();
+	void cleanupGame();
 private:
 
 	//functions to run the server
@@ -66,6 +71,7 @@ private:
 	int max_players;
 	serverState _state;
 	bool start_game;
+	bool just_changed;
 	bool close_server;
 
 	sf::TcpSocket tcpClient[2];

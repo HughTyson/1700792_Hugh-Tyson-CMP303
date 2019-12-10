@@ -25,12 +25,15 @@ void Lobby_State::OnEnter()
 
 void Lobby_State::OnExit()
 {
+	game_system->network_->game_time.restart();
 }
 
 void Lobby_State::Update(float frame_time, LobbyCondition_State & lobby_change)
 {
 
-
+	game_system->window_->setView(game_system->lobby_view);
+	
+	
 	switch (state_)
 	{
 		case LobbyCondition_State::LOBBY:
@@ -101,15 +104,13 @@ void Lobby_State::Client_Update(LobbyCondition_State & lobby_change)
 	{
 		game_system->network_->player_clock.restart();
 		game_system->network_->lobby_update(ready, exit);
-	
-		
-
 	}		
 
 	data.start_game = game_system->network_->client_recive();
-	if (exit == true || game_system->network_->get_connected() == false)
+	if (game_system->network_->get_connected() == false)
 	{
 		state_ = EXIT_SERVER;
+		game_system->network_->lobby_update(ready, exit);
 	}
 
 	if (data.start_game)

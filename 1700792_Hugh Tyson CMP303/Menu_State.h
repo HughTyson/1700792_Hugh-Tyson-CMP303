@@ -73,6 +73,12 @@ private:
 	sf::Texture back_red_texture;
 	sf::Texture back_green_texture;
 
+	sf::Texture create_red_texture;
+	sf::Texture create_green_texture;
+
+	sf::Texture join_red_texture;
+	sf::Texture join_green_texture;
+
 	//----text variables----\\
 
 	sf::Text menu_text;

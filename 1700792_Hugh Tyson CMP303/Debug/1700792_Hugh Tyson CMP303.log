@@ -1,28 +1,3 @@
-﻿  Level1_State.cpp
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(210): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(221): warning C4018: '<': signed/unsigned mismatch
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(334): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(335): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(340): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(345): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(300): warning C4101: 'predicted_y': unreferenced local variable
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(297): warning C4101: 'x_change': unreferenced local variable
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(299): warning C4101: 'predicted_x': unreferenced local variable
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(298): warning C4101: 'y_change': unreferenced local variable
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(383): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(384): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(391): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(396): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(362): warning C4101: 'predicted_y': unreferenced local variable
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(359): warning C4101: 'x_change': unreferenced local variable
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(361): warning C4101: 'predicted_x': unreferenced local variable
-f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\level1_state.cpp(360): warning C4101: 'y_change': unreferenced local variable
+﻿  Server.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\server.cpp(46): warning C4305: '=': truncation from 'double' to 'float'
   1700792_Hugh Tyson CMP303.vcxproj -> F:\Current Year Work\Networking\1700792_Hugh Tyson CMP303\Debug\1700792_Hugh Tyson CMP303.exe

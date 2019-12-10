@@ -105,7 +105,7 @@ void Menu_State::Draw()
 
 		game_system->window_->draw(start_button);
 		game_system->window_->draw(how_to_button);
-		game_system->window_->draw(networking_button);
+		//game_system->window_->draw(networking_button);
 
 	}
 	break;
@@ -189,14 +189,17 @@ void Menu_State::Sprite_Init()
 	networking_button.setOrigin(sf::Vector2f(0, 0));
 	networking_button.setPosition(400, 350);
 	
-	
-	create_server_button.setTexture(&back_red_texture);
+	create_red_texture.loadFromFile("gfx/creat button_red.png");
+	create_green_texture.loadFromFile("gfx/creat button.png");
+	create_server_button.setTexture(&create_red_texture);
 	create_server_button.setSize(sf::Vector2f(350, 150));
 	create_server_button.setCollisionBox(sf::FloatRect(40, 50, 280, 100));
 	create_server_button.setOrigin(0, 0);
 	create_server_button.setPosition(50, 166);
 
-	join_server_button.setTexture(&back_red_texture);
+	join_red_texture.loadFromFile("gfx/join button_red.png");
+	join_green_texture.loadFromFile("gfx/join button.png");
+	join_server_button.setTexture(&join_red_texture);
 	join_server_button.setSize(sf::Vector2f(350, 150));
 	join_server_button.setCollisionBox(sf::FloatRect(40, 50, 280, 100));
 	join_server_button.setOrigin(0, 0);
@@ -243,7 +246,7 @@ void Menu_State::StartButton(MCondition_State& menu_change)
 	if (button_hover == true) {
 
 		if (game_system->input_->isMouseLeftDown() == true) {
-			menu_change = FINISH;
+			state_ = NETWORKING;
 		}
 	}
 
@@ -357,12 +360,12 @@ void Menu_State::CreateServer(MCondition_State& menu_change)
 		game_system->cursor_->collisionResponse(NULL);
 		create_server_button.collisionResponse(NULL);
 		button_hover = true; //if their is collision set back collision variable to true
-		create_server_button.setTexture(&back_green_texture); //change button colour to green if there is collision
+		create_server_button.setTexture(&create_green_texture); //change button colour to green if there is collision
 	}
 	else
 	{
 		button_hover = false;
-		create_server_button.setTexture(&back_red_texture); // if no collision set texture red
+		create_server_button.setTexture(&create_red_texture); // if no collision set texture red
 	}
 
 	if (button_hover == true)
@@ -371,6 +374,7 @@ void Menu_State::CreateServer(MCondition_State& menu_change)
 			
 			if (!game_system->network_->getServerRunning())
 			{
+				game_system->restartNetwork();
 				game_system->network_->server_init();
 				menu_change = FINISH_NETWORK;
 				game_system->input_->setMousePosition(0, 0);
@@ -387,12 +391,12 @@ void Menu_State::JoinServer(MCondition_State & menu_change)
 		game_system->cursor_->collisionResponse(NULL);
 		join_server_button.collisionResponse(NULL);
 		button_hover = true; //if their is collision set back collision variable to true
-		join_server_button.setTexture(&back_green_texture); //change button colour to green if there is collision
+		join_server_button.setTexture(&join_green_texture); //change button colour to green if there is collision
 	}
 	else
 	{
 		button_hover = false;
-		join_server_button.setTexture(&back_red_texture); // if no collision set texture red
+		join_server_button.setTexture(&join_red_texture); // if no collision set texture red
 	}
 
 	if (button_hover == true)

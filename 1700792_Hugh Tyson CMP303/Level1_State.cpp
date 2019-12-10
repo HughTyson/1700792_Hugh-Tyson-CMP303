@@ -1,3 +1,4 @@
+
 #include "Level1_State.h"
 
 
@@ -43,7 +44,13 @@ void Level1_State::OnEnter()
 
 	level_finished = false;
 
-	ball_movement_type = POSITION;
+	mouse_movement_type = MOUSE_POSITION;
+	std::cout << "Mouse Movement : Position" << std::endl;
+
+	ball_movement_type = QUADRATIC;
+	std::cout << "Ball Movement : QUADRATIC" << std::endl;
+
+	current_player = game_system->network_->getClientNumber();
 }
 
 void Level1_State::OnExit()
@@ -115,6 +122,18 @@ void Level1_State::Draw()
 	game_system->window_->draw(player[0]);
 	game_system->window_->draw(player[1]);
 	
+	if (game_system->input_->isMouseLeftDown())
+	{
+		game_system->window_->draw(arrow[current_player]);
+		
+	}
+
+	if (game_system->network_->player_info[other_player].is_hitting == true)
+	{
+		game_system->window_->draw(arrow[other_player]);
+	}
+	
+
 	game_system->window_->draw(hole);
 
 	game_system->window_->draw(*game_system->cursor_);
@@ -153,62 +172,78 @@ void Level1_State::Inputs()
 	
 	if (game_system->input_->isKeyDown(sf::Keyboard::Num1))
 	{
-		ball_movement_type = POSITION;
+		mouse_movement_type = MOUSE_POSITION;
+		std::cout << "Mouse Movement : Position" << std::endl;
+		game_system->input_->setKeyUp(sf::Keyboard::Num1);
+
 	}
 
 	if (game_system->input_->isKeyDown(sf::Keyboard::Num2))
 	{
-		ball_movement_type = PREDICTION;
+		mouse_movement_type = LINEEAR_PREDICTION;
+		std::cout << "Mouse Movement : Linear Prediction" << std::endl;
+		game_system->input_->setKeyUp(sf::Keyboard::Num2);
 	}
 
 	if (game_system->input_->isKeyDown(sf::Keyboard::Num3))
 	{
+		mouse_movement_type = QUAD_PREDICTION;
+		std::cout << "Mouse Movement : Quadratic Prediction" << std::endl;
+		game_system->input_->setKeyUp(sf::Keyboard::Num3);
+	}
+
+
+	if (game_system->input_->isKeyDown(sf::Keyboard::Num4))
+	{
+		ball_movement_type = BALL_POSITION;
+		std::cout << "Ball Movement : Position" << std::endl;
+		game_system->input_->setKeyUp(sf::Keyboard::Num4);
+	}
+
+	if (game_system->input_->isKeyDown(sf::Keyboard::Num5))
+	{
+		ball_movement_type = LINEAR;
+		std::cout << "Ball Movement : Linear Prediction" << std::endl;
+		game_system->input_->setKeyUp(sf::Keyboard::Num5);
+	}
+
+	if (game_system->input_->isKeyDown(sf::Keyboard::Num6))
+	{
+		ball_movement_type = QUADRATIC;
+		std::cout << "Ball Movement : Quadratic Prediction" << std::endl;
+		game_system->input_->setKeyUp(sf::Keyboard::Num6);
+	}
+
+	if (game_system->input_->isKeyDown(sf::Keyboard::Num7))
+	{
 		ball_movement_type = VELOCITY;
+		std::cout << "Ball Movement : Velocity" << std::endl;
+		game_system->input_->setKeyUp(sf::Keyboard::Num7);
+	}
+
+	if (game_system->input_->isMouseLeftDown())
+	{
+		game_system->network_->player_info[current_player].is_hitting = true;
+	}
+	else if(!game_system->input_->isMouseLeftDown())
+	{
+		game_system->network_->player_info[current_player].is_hitting = false;
 	}
 
 }
 
-
-
 void Level1_State::Player_Update(float deltatime)
 {
-
-	current_player = game_system->network_->getClientNumber();
-
-	if (Vector::magnitude(player[game_system->network_->getClientNumber()].getVelocity()) < 10.f && player[game_system->network_->getClientNumber()].getHit() == false)
+	if (player[current_player].getHole() == false)
 	{
-		player[current_player].setHit(false);
+		player[current_player].update(deltatime, game_system->getMouseX(), game_system->getMouseY(), game_system->window_);
+		arrow[current_player].Update(deltatime, game_system->getMouseX(), game_system->getMouseY(), player[current_player].getPosition(), game_system->window_, game_system->input_);
+		game_system->network_->player_info[current_player].angle = arrow[current_player].getAngle();
 	}
-
-
-	//if (Vector::magnitude(player[current_player].getVelocity()) < 10.f && player[current_player].getHit() == true)
-	//{
-	//	player[current_player].setHit(false);
-	//	pl
-	//	current_player++;
-	//}
-
-
-
-
-
-	//if (current_player == amount_of_players)
-	//{	
-	//	current_player = 0;
-	//}
-
-	//if (player[current_player].getHole() == true)
-	//{
-	//	current_player++;
-
-	//	if (current_player == amount_of_players)
-	//	{
-	//		current_player = 0;
-	//	}
-	//}
-
-	player[current_player].update(deltatime, game_system->getMouseX(), game_system->getMouseY(), game_system->window_);
-
+	else if (player[current_player].getHole() == true)
+	{
+		player[current_player].setPosition(-100, 100);
+	}
 	
 	hole.Update(deltatime);
 }
@@ -224,15 +259,17 @@ void Level1_State::Collisions(float deltatime)
 		{
 			Player_Ground_Collision(i, deltatime);
 		}
+	}
 
-		//checking if the player has collided with the hole
-		if (player[i].getHole() == false)
+	if (player[current_player].getHole() == false)
+	{
+		if (Collision::checkBoundingBox(&hole, &player[current_player]))
 		{
-			if (Collision::checkBoundingBox(&hole, &player[i]))
-			{
-				hole.collisionResponse(BALL, deltatime);
-				player[i].collisionResponse(HOLE, deltatime);
-			}
+			hole.collisionResponse(BALL, deltatime);
+			player[current_player].collisionResponse(HOLE, deltatime);
+			game_system->network_->player_info[current_player].level_complete = true;
+			player[current_player].setHole(true);
+			player[current_player].setPosition(-2, -2);
 		}
 	}
 
@@ -266,8 +303,6 @@ void Level1_State::Pause_Update(LCondition_State & menu_change)
 	}
 }
 
-
-
 void Level1_State::NetworkingUpdate(float deltatime)
 {
 	float timeSinceLastUpdate = game_system->network_->player_clock.getElapsedTime().asSeconds();
@@ -280,14 +315,15 @@ void Level1_State::NetworkingUpdate(float deltatime)
 	
 	level_finished = game_system->network_->client_recive();
 
-
-	//if (level_finished == true)
-	//{
-	//	state_ = FINISHL_SERVER;
-	//}
+	//std::cout << level_finished << std::endl;
+	if (level_finished == true || game_system->network_->get_connected() == false)
+	{
+		state_ = FINISHL_SERVER;
+	}
 
 	NetworkingPlayerUpdate(deltatime);
 	NetworkingMouseUpdate(deltatime);
+	NetworkingArrowUpdate(deltatime);
 }
 
 void Level1_State::NetworkingPlayerUpdate(float deltatime)
@@ -299,55 +335,88 @@ void Level1_State::NetworkingPlayerUpdate(float deltatime)
 	float predicted_x;
 	float predicted_y;
 
-	if (ball_movement_type == POSITION)
-	{
-		player[other_player].setPosition(sf::Vector2f(game_system->network_->player_info[other_player].ball_position));
-	}
-	else if (ball_movement_type == PREDICTION)
-	{
-		int size = game_system->network_->messages.size();
+	int size = game_system->network_->messages.size();
 
-		if (size > 3)
+
+	if (size > 3)
+	{		
+		const PlayerInfo& msg0 = game_system->network_->messages[size - 1];
+		const PlayerInfo& msg1 = game_system->network_->messages[size - 2];
+		const PlayerInfo& msg2 = game_system->network_->messages[size - 3];
+
+		switch (ball_movement_type)
 		{
-			const PlayerInfo& msg0 = game_system->network_->messages[size - 1];
-			const PlayerInfo& msg1 = game_system->network_->messages[size - 2];
-			const PlayerInfo& msg2 = game_system->network_->messages[size - 3];
+			case BALL_POSITION:
+			{
 
-			sf::Vector2f velocity_a(msg0.ball_position.x - msg1.ball_position.x, msg0.ball_position.y - msg1.ball_position.y);
-			sf::Vector2f velocity_b(msg1.ball_position.x - msg2.ball_position.x, msg1.ball_position.y - msg2.ball_position.y);
+				player[other_player].setPosition(sf::Vector2f(msg0.ball_position.x, msg0.ball_position.y));
+				break;
+			}
+			case LINEAR:
+			{
 
-			//x_change = msg0.mouse_pos.x - msg1.mouse_pos.x;
-			//y_change = msg0.mouse_pos.y - msg1.mouse_pos.y;
+				sf::Vector2f velocity_a(msg0.ball_position.x - msg1.ball_position.x, msg0.ball_position.y - msg1.ball_position.y);
+				sf::Vector2f velocity_b(msg1.ball_position.x - msg2.ball_position.x, msg1.ball_position.y - msg2.ball_position.y);
 
-			float time_diff = game_system->network_->game_time.getElapsedTime().asSeconds() - msg0.last_time; //find latency by calculating difference in the local clock and the networck clock
+				float time_diff = game_system->network_->game_time.getElapsedTime().asSeconds() - msg0.last_time; //find latency by calculating difference in the local clock and the networck clock
 
-			//x_change /= time_diff;
-			//y_change /= time_diff;
+				predictedX = msg0.ball_position.x + (velocity_a.x * time_diff);
+				predictedY = msg0.ball_position.y + (velocity_a.y * time_diff);
 
-			//predictedX = msg0.mouse_pos.x + (time_diff * x_change);
-			//predictedY = msg0.mouse_pos.y + (time_diff * y_change);
+				player[other_player].setPosition(sf::Vector2f(predictedX, predictedY));
 
-			float time_ = msg0.last_time - msg1.last_time;
+				break;
+			}
+			case QUADRATIC:
+			{
+				sf::Vector2f velocity_a(msg0.ball_position.x - msg1.ball_position.x, msg0.ball_position.y - msg1.ball_position.y);
+				sf::Vector2f velocity_b(msg1.ball_position.x - msg2.ball_position.x, msg1.ball_position.y - msg2.ball_position.y);
 
-			sf::Vector2f acceleration = (velocity_b - velocity_a) / time_;
+				float time_diff = game_system->network_->game_time.getElapsedTime().asSeconds() - msg0.last_time; //find latency by calculating difference in the local clock and the networck clock
 
-			predictedX = msg0.mouse_pos.x + (velocity_a.x*time_diff) + (0.5*acceleration.x*pow(time_diff, 2));
-			predictedY = msg0.mouse_pos.y + (velocity_a.y*time_diff) + (0.5*acceleration.y*pow(time_diff, 2));
+				float time_ = msg0.last_time - msg1.last_time;
 
-			predictedX = lerp(second_cursor->getPosition().x, predictedX, (game_system->network_->offset_time));
-			predictedY = lerp(second_cursor->getPosition().y, predictedY, (game_system->network_->offset_time));
+				//quadratic model
+				//a = v-u/t
 
-			second_cursor->update(deltatime, game_system->input_, predictedX, predictedY);
-			//second_cursor->update(deltatime, game_system->input_, msg0.mouse_pos.x, msg0.mouse_pos.y);
+				sf::Vector2f acceleration = (velocity_b - velocity_a) / time_;
+
+				predictedX = msg0.ball_position.x + (velocity_a.x*time_diff) + (0.5*acceleration.x*pow(time_diff, 2));
+				predictedY = msg0.ball_position.y + (velocity_a.y*time_diff) + (0.5*acceleration.y*pow(time_diff, 2));
+
+				player[other_player].setPosition(sf::Vector2f(predictedX, predictedY));
+
+
+				break;
+			}
+			case VELOCITY:
+			{
+				player[other_player].move(msg0.ball_velocity * deltatime);
+
+				if (re_sync.getElapsedTime().asSeconds() > 4)
+				{
+					re_sync.restart();
+					if ((player[other_player].getPosition().x != msg0.ball_position.x));
+					{
+						sf::Vector2f direction = sf::Vector2f(player[other_player].getPosition().x, player[other_player].getPosition().y) - sf::Vector2f(msg0.ball_position.x, msg0.ball_position.y);
+
+						player[other_player].move(direction * deltatime);
+					}
+				}
+					
+					
+				
+				break;
+			}
+			default:
+				break;
 		}
-		else
-		{
-			second_cursor->update(deltatime, game_system->input_, game_system->network_->player_info[other_player].mouse_pos.x, game_system->network_->player_info[other_player].mouse_pos.y);
-		}
-
 	}
 
+	
+	
 	game_system->network_->player_info[game_system->network_->getClientNumber()].ball_position = sf::Vector2f(player[current_player].getPosition());
+	game_system->network_->player_info[current_player].ball_velocity = sf::Vector2f(player[current_player].getVelocity());
 
 }
 
@@ -370,41 +439,98 @@ void Level1_State::NetworkingMouseUpdate(float deltatime)
 		const PlayerInfo& msg0 = game_system->network_->messages[size - 1];
 		const PlayerInfo& msg1 = game_system->network_->messages[size - 2];
 		const PlayerInfo& msg2 = game_system->network_->messages[size - 3];
-		
-		sf::Vector2f velocity_a(msg0.mouse_pos.x - msg1.mouse_pos.x, msg0.mouse_pos.y - msg1.mouse_pos.y);
-		sf::Vector2f velocity_b(msg1.mouse_pos.x - msg2.mouse_pos.x, msg1.mouse_pos.y - msg2.mouse_pos.y);
 
-		float time_diff = game_system->network_->game_time.getElapsedTime().asSeconds() - msg0.last_time; //find latency by calculating difference in the local clock and the networck clock
-																							 
-		float time_ = msg0.last_time - msg1.last_time;
+		switch (mouse_movement_type)
+		{
+			case MOUSE_POSITION:
+			{
+				second_cursor->update(deltatime, game_system->input_, msg0.mouse_pos.x, msg0.mouse_pos.y);
+				break;
+			}
+			case LINEEAR_PREDICTION:
+			{
+				sf::Vector2f velocity_a(msg0.mouse_pos.x - msg1.mouse_pos.x, msg0.mouse_pos.y - msg1.mouse_pos.y);
+				sf::Vector2f velocity_b(msg1.mouse_pos.x - msg2.mouse_pos.x, msg1.mouse_pos.y - msg2.mouse_pos.y);
 
-		sf::Vector2f acceleration = (velocity_b - velocity_a) / time_;
+				float time_diff = game_system->network_->game_time.getElapsedTime().asSeconds() - msg0.last_time; //find latency by calculating difference in the local clock and the networck clock
 
-		predictedX = msg0.mouse_pos.x + (velocity_a.x*time_diff) + (0.5*acceleration.x*pow(time_diff, 2));
-		predictedY = msg0.mouse_pos.y + (velocity_a.y*time_diff) + (0.5*acceleration.y*pow(time_diff, 2));
+				predictedX = msg0.mouse_pos.x + (velocity_a.x * time_diff);
+				predictedY = msg0.mouse_pos.y + (velocity_a.y * time_diff);
 
-		//predictedX = lerp(second_cursor->getPosition().x, predictedX, msg0.last_time + time_diff);
-		//predictedY = lerp(second_cursor->getPosition().y, predictedY, msg0.last_time + time_diff);
+				second_cursor->update(deltatime, game_system->input_, predictedX, predictedY);
+				break;
+			}
+			case QUAD_PREDICTION:
+			{
+				sf::Vector2f velocity_a(msg0.mouse_pos.x - msg1.mouse_pos.x, msg0.mouse_pos.y - msg1.mouse_pos.y);
+				sf::Vector2f velocity_b(msg1.mouse_pos.x - msg2.mouse_pos.x, msg1.mouse_pos.y - msg2.mouse_pos.y);
 
-		std::cout << predictedX << std::endl;
+				float time_diff = game_system->network_->game_time.getElapsedTime().asSeconds() - msg0.last_time; //find latency by calculating difference in the local clock and the networck clock
 
-		second_cursor->update(deltatime, game_system->input_, predictedX, predictedY);
-		
+				float time_ = msg0.last_time - msg1.last_time;
+
+				//quadratic model
+				//a = v-u/t
+
+				sf::Vector2f acceleration = (velocity_b - velocity_a) / time_;
+
+				predictedX = msg0.mouse_pos.x + (velocity_a.x*time_diff) + (0.5*acceleration.x*pow(time_diff, 2));
+				predictedY = msg0.mouse_pos.y + (velocity_a.y*time_diff) + (0.5*acceleration.y*pow(time_diff, 2));
+
+				second_cursor->update(deltatime, game_system->input_, predictedX, predictedY);
+
+				break;
+			}
+			default:
+				break;
+		}
 	}
-	else
-	{
-		second_cursor->update(deltatime, game_system->input_, game_system->network_->player_info[other_player].mouse_pos.x, game_system->network_->player_info[other_player].mouse_pos.y);
-	}
 
+	
+	
 	//uppdate this clients info to be sent to the server
 	game_system->network_->player_info[game_system->network_->getClientNumber()].mouse_pos = sf::Vector2f(game_system->cursor_->getPosition().x, game_system->cursor_->getPosition().y);
 
 
 }
 
+void Level1_State::NetworkingArrowUpdate(float deltatime)
+{
+
+	int size = game_system->network_->messages.size();
+	float predictedRoatation;
+
+	if (size > 3)
+	{
+		const PlayerInfo& msg0 = game_system->network_->messages[size - 1];
+		const PlayerInfo& msg1 = game_system->network_->messages[size - 2];
+		const PlayerInfo& msg2 = game_system->network_->messages[size - 3];
+
+
+		sf::Vector2f velocity_a(msg0.angle - msg1.angle, msg0.angle - msg1.angle);
+		sf::Vector2f velocity_b(msg1.angle - msg2.angle, msg1.angle - msg2.angle);
+
+		float time_diff = game_system->network_->game_time.getElapsedTime().asSeconds() - msg0.last_time; //find latency by calculating difference in the local clock and the networck clock
+
+		float time_ = msg0.last_time - msg1.last_time;
+
+		//quadratic model
+		//a = v-u/t
+
+		sf::Vector2f acceleration = (velocity_b - velocity_a) / time_;
+
+		predictedRoatation = msg0.angle + (velocity_a.x*time_diff) + (0.5*acceleration.x*pow(time_diff, 2));
+		
+		arrow[other_player].setRotation(predictedRoatation);
+		arrow[other_player].setPosition(player[other_player].getPosition());
+
+	}
+
+
+}
 float Level1_State::lerp(float a, float b, float t)
 {
-	return a+t*(b-a);
+	return ((1.0f - t) * a) + (t * b);
 }
 
 void Level1_State::Object_Clean_Up()
@@ -414,7 +540,6 @@ void Level1_State::Object_Clean_Up()
 	world = NULL;
 
 	player.clear();
-	
 
 }
 
@@ -435,13 +560,19 @@ void Level1_State::Sprite_Init()
 
 	player.push_back(temp_player);
 
+	arrowTexture.loadFromFile("gfx/Arrow.png");
 	temp_arrow.setTexture(&arrowTexture);
-	temp_arrow.setSize(sf::Vector2f(20, 20));
+	temp_player.setOrigin(sf::Vector2f(50, 50));
+	temp_arrow.setSize(sf::Vector2f(20, 40));
 	temp_arrow.setPosition(0, 0);
-	temp_player.setOrigin(sf::Vector2f(0, 0));
 
-//	arrow.push_back(temp_player);
+	temp_arrow.setTexture(&arrowTexture);
+	temp_player.setOrigin(sf::Vector2f(50, 50));
+	temp_arrow.setSize(sf::Vector2f(20, 40));
+	temp_arrow.setPosition(0, 0);
 
+	arrow.push_back(temp_arrow);
+	arrow.push_back(temp_arrow);
 
 	//an if statement that is used for any sprites that get declared if the game is multiplayer
 	if (local_multiplayer == true)

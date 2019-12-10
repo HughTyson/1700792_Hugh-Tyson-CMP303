@@ -13,6 +13,12 @@ Packets::~Packets()
 
 //initial connect packet unpacking and packing
 
+sf::Packet Packets::sendPing(Message m)
+{
+	send_packet.clear();
+	return send_packet << m.type << m.sent_time;
+}
+
 sf::Packet Packets::sendInitialData(Initial_Connect i)
 {
 	send_packet.clear();
@@ -40,8 +46,6 @@ Server_Lobby_Message Packets::recieveServerLobbyData(sf::Packet temp_packet, Ser
 	return sl;
 }
 
-
-
 sf::Packet Packets::sendServerLobbyData(Server_Lobby_Message sl)
 {
 	send_packet.clear();
@@ -54,17 +58,21 @@ sf::Packet Packets::sendClientLobbyData(Client_Lobby_Message cl)
 	return send_packet << cl.type  << cl.ready << cl.exit;
 }
 
+
+
 //functions used to pack and unpack level packets
+
+
 
 sf::Packet Packets::sendClientGameData(Client_InGame_Message cg)
 {
 	send_packet.clear();
-	return send_packet << cg.type << cg.sent_time << cg.player_number << cg.mouse_pos_x << cg.mouse_pos_y << cg.ball_pos_x << cg.ball_pos_y << cg.strokes << cg.complete;
+	return send_packet << cg.type << cg.sent_time << cg.player_number << cg.mouse_pos_x << cg.mouse_pos_y << cg.ball_pos_x << cg.ball_pos_y << cg.velocity_x << cg.velocity_y << cg.strokes << cg.angle << cg.is_hitting << cg.complete;
 }
 
 Client_InGame_Message Packets::recieveClientInGameData(sf::Packet temp_packet, Client_InGame_Message cg)
 {
-	temp_packet >> cg.type >> cg.sent_time >> cg.player_number >> cg.mouse_pos_x >> cg.mouse_pos_y >> cg.ball_pos_x >> cg.ball_pos_y >> cg.strokes >> cg.complete;
+	temp_packet >> cg.type >> cg.sent_time >> cg.player_number >> cg.mouse_pos_x >> cg.mouse_pos_y >> cg.ball_pos_x >> cg.ball_pos_y >> cg.velocity_x >> cg.velocity_y >>cg.strokes >> cg.angle >> cg.is_hitting >> cg.complete;
 	return cg;
 }
 
@@ -72,24 +80,26 @@ sf::Packet Packets::sendServerGameData(Server_InGame_Message sg)
 {
 	send_packet.clear();
 
-	return send_packet << sg.type << sg.sent_time << sg.player_number[0] << sg.ball_pos_x[0] << sg.ball_pos_y[0] << sg.mouse_pos_x[0] << sg.mouse_pos_y[0] << sg.strokes[0]
-		<< sg.player_number[1] << sg.ball_pos_x[1] << sg.ball_pos_y[1] << sg.mouse_pos_x[1] << sg.mouse_pos_y[1] << sg.strokes[1]
+	return send_packet << sg.type << sg.sent_time << sg.player_number[0] << sg.ball_pos_x[0] << sg.ball_pos_y[0] << sg.mouse_pos_x[0] << sg.mouse_pos_y[0] << sg.velocity_x[0] << sg.velocity_y[0] << sg.strokes[0] << sg.angle[0] << sg.is_hitting[0]
+		<< sg.player_number[1] << sg.ball_pos_x[1] << sg.ball_pos_y[1] << sg.mouse_pos_x[1] << sg.mouse_pos_y[1] << sg.velocity_x[1] << sg.velocity_y[1] << sg.strokes[1] << sg.angle[1] << sg.is_hitting[1]
 		<< sg.game_complete;
 }
 
 Server_InGame_Message Packets::recieveServerInGameData(sf::Packet temp_packet, Server_InGame_Message sg)
 {
-	temp_packet >> sg.type >> sg.sent_time >> sg.player_number[0] >> sg.ball_pos_x[0] >> sg.ball_pos_y[0] >> sg.mouse_pos_x[0] >> sg.mouse_pos_y[0] >> sg.strokes[0]
-		>> sg.player_number[1] >> sg.ball_pos_x[1] >> sg.ball_pos_y[1] >> sg.mouse_pos_x[1] >> sg.mouse_pos_y[1] >> sg.strokes[1]
+	temp_packet >> sg.type >> sg.sent_time >> sg.player_number[0] >> sg.ball_pos_x[0] >> sg.ball_pos_y[0] >> sg.mouse_pos_x[0] >> sg.mouse_pos_y[0] >> sg.velocity_x[0] >> sg.velocity_y[0] >> sg.strokes[0] >> sg.angle[0] >> sg.is_hitting[0]
+		>> sg.player_number[1] >> sg.ball_pos_x[1] >> sg.ball_pos_y[1] >> sg.mouse_pos_x[1] >> sg.mouse_pos_y[1] >> sg.velocity_x[1] >> sg.velocity_y[1] >> sg.strokes[1] >>sg.angle[1] >> sg.is_hitting[1]
 		>> sg.game_complete;
 	return sg;
 }
 
 
 //unpack what type of message has been sent
+
+
 Message Packets::getType(sf::Packet temp_packet, Message m)
 {
-	temp_packet >> m.type;
+	temp_packet >> m.type >>m.sent_time;
 	return m;
 }
 

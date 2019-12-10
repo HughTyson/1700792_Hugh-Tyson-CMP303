@@ -104,6 +104,9 @@ void System::Init()
 	view.setSize(830, 630);
 	view.setCenter(415, 315);
 
+	lobby_view.setSize(window_->getSize().x, window_->getSize().y);
+	lobby_view.setCenter(window_->getSize().x/2 , window_->getSize().y/2);
+
 
 	network_ = new NetworkingManager();
 }
@@ -150,4 +153,15 @@ bool System::getOnlineMulti()
 void System::setOnlineMulti(bool multi)
 {
 	online_multiplayer = multi;
+}
+
+void System::restartNetwork()
+{
+
+	network_ = NULL;
+	delete network_;
+
+	network_ = new NetworkingManager;
+
+
 }

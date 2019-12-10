@@ -53,6 +53,8 @@ public:
 	bool getOnlineMulti();
 	void setOnlineMulti(bool multi);
 
+	void restartNetwork();
+
 
 	sf::RenderWindow *window_;
 	Input* input_;
@@ -71,6 +73,7 @@ public:
 	TileMap tileMap;
 
 	sf::View view;
+	sf::View lobby_view;
 
 	NetworkingManager* network_;
 

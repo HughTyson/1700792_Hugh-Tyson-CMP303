@@ -8,18 +8,22 @@ public:
 	Arrow();
 	~Arrow();
 
-	void Update(float deltatime, int mousex, int mousey, sf::Vector2f ball_position, sf::RenderWindow* window);
+	void Update(float deltatime, int mousex, int mousey, sf::Vector2f ball_position, sf::RenderWindow* window, Input *in);
 
-	void update_arrow(int mousex, int mousey);
+	void update_arrow(int mousex, int mousey, Input *in);
 
-	void draw(sf::Vector2f ball_position);
+	void predicted_arrow(float angle);
+
+	float getAngle() { return angle; };
+
+	//void draw(sf::Vector2f ball_position);
 
 	bool hitting = false;
 
 private:
 
-	int newx, newy, currentx, currenty;
+	float newx, newy, currentx, currenty;
 
-	sf::Vector2f direction;
+	float angle;
 };
 

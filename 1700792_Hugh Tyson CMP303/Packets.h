@@ -10,7 +10,8 @@ enum MESSAGETYPE
 	m_Server_Lobby,
 	m_Connected,
 	m_Client_Game,
-	m_Server_Game
+	m_Server_Game,
+	m_Ping
 };
 
 struct Message
@@ -44,6 +45,8 @@ struct Client_InGame_Message : Message
 	float ball_pos_x;
 	float ball_pos_y;
 	int strokes;
+	float angle;
+	bool is_hitting;
 	bool complete;
 	
 	float velocity_x;
@@ -57,9 +60,13 @@ struct Server_InGame_Message : Message
 	float mouse_pos_y[2];
 	float ball_pos_x[2];
 	float ball_pos_y[2];
+
+	float velocity_x[2];
+	float velocity_y[2];
 	
 	int strokes[2];
-
+	float angle[2];
+	bool is_hitting[2];
 	bool game_complete;
 	
 
@@ -71,6 +78,7 @@ public:
 	Packets();
 	~Packets();
 	
+	sf::Packet sendPing(Message m);
 	sf::Packet sendInitialData(Initial_Connect i);
 	sf::Packet sendClientLobbyData(Client_Lobby_Message cl);
 	sf::Packet sendServerLobbyData(Server_Lobby_Message sl);

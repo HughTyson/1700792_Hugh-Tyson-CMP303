@@ -14,6 +14,8 @@ struct PlayerInfo
 	sf::Vector2f ball_velocity;
 	int strokes;
 	bool level_complete;
+	float angle;
+	bool is_hitting;
 	float last_time;
 
 };
@@ -39,6 +41,10 @@ public:
 	int getClientNumber() { return clients_number; };
 	
 	bool getServerRunning() { return server_running; }	
+
+	int getPing() { return ping; };
+
+
 	
 	//functions for client to server
 	bool connect_player(bool host);
@@ -55,14 +61,22 @@ public:
 	sf::Clock game_time;
 	float offset_time;
 	
+	sf::Clock ping_clock;
 
 protected:
 
-	
+	void host_disconnect();
+
+	float ping;
+	void ping_request();
+
+
 	int clients_number;
 	int other_number;
 	int players_connected;
 	sf::Thread network_thread;
+
+	void cleanupgame();
 
 	std::string connecting_ip;
 

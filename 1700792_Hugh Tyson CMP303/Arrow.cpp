@@ -4,6 +4,7 @@
 
 Arrow::Arrow()
 {
+	setOrigin(0, 0);
 }
 
 
@@ -11,22 +12,20 @@ Arrow::~Arrow()
 {
 }
 
-void Arrow::Update(float deltatime, int mousex, int mousey, sf::Vector2f ball_position, sf::RenderWindow * window)
+void Arrow::Update(float deltatime, int mousex, int mousey, sf::Vector2f ball_position, sf::RenderWindow * window, Input *in)
 {
+	setPosition(ball_position);
 
-	update_arrow(mousex, mousey);
+	update_arrow(mousex, mousey, in);
 
-	if (hitting == true)
-	{
-		draw(ball_position);
-	}
+
 	
 }
 
-void Arrow::update_arrow(int mousex, int mousey)
+void Arrow::update_arrow(int mousex, int mousey, Input *in)
 {
 
-	if (input->isMouseLeftDown() == true)
+	if (in->isMouseLeftDown())
 	{
 		if (hitting == false)
 		{
@@ -34,24 +33,29 @@ void Arrow::update_arrow(int mousex, int mousey)
 			currenty = mousey;
 			hitting = true;
 		}
-		return;
+
 	}
 	
-	if (hitting == true)
+	if (!in->isMouseLeftDown())
 	{
+		hitting = false;
+	}
+
+	if (in->isMouseLeftDown() && hitting)
+	{
+
 		newx = mousex;
 		newy = mousey;
 
-		direction = sf::Vector2f(newx, newy) - sf::Vector2f(currentx, currenty);
-		direction = Vector::normalise(direction);
+		float a = newx - currentx ;
+		float b = newy - currenty;
 
+		//float rotation = a + b;
+		float rotation = ((atan2(a, b)) * (180 / 3.146));
 
-	}
-
-
-}
-
-void Arrow::draw(sf::Vector2f ball_position)
-{
-	setPosition(ball_position.x, ball_position.y);
+		rotation = 360 - rotation;
+		angle = rotation;
+		setRotation(rotation);
+	
+	}		
 }

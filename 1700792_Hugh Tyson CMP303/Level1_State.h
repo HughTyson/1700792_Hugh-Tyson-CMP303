@@ -10,9 +10,14 @@ enum LCondition_State
 	READYL, CONTINUEL, ENDL, PAUSEL, FINISHL, FINISHL_SERVER
 };
 
-enum Movement_Type
+enum Ball_Movement_Type
 {
-	POSITION, PREDICTION, VELOCITY
+	BALL_POSITION, LINEAR, QUADRATIC, VELOCITY
+};
+
+enum Mouse_Movement_Type
+{
+	MOUSE_POSITION, LINEEAR_PREDICTION, QUAD_PREDICTION
 };
 
 class Level1_State
@@ -52,7 +57,7 @@ public:
 	void NetworkingUpdate(float deltatime);
 	void NetworkingPlayerUpdate(float deltatime);
 	void NetworkingMouseUpdate(float deltatime);
-
+	void NetworkingArrowUpdate(float deltatime);
 	
 private:
 
@@ -99,7 +104,11 @@ private:
 
 	int other_player;
 
-	int ball_movement_type;
+	Ball_Movement_Type ball_movement_type;
+	Mouse_Movement_Type mouse_movement_type;
+
+	sf::Clock re_sync;
+	bool re_sync_velocity = false;
 
 
 };

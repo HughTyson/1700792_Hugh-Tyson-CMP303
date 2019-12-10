@@ -1,0 +1,50 @@
+﻿  Animation.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\animation.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  Arrow.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\mysprite.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  AudioManager.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\sound.h(5): fatal error C1083: Cannot open include file: 'SFML\Audio.hpp': No such file or directory
+  Ball.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\mysprite.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  Button.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\mysprite.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  Collision.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\mysprite.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  Cursor.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\mysprite.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  GameState.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\sceneapp.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  Hole.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\mysprite.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  Input.cpp
+  Level1_State.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\sceneapp.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  Lobby_State.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\sceneapp.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  Main.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\sceneapp.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  Menu_State.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\sceneapp.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  MusicObject.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\musicobject.h(6): fatal error C1083: Cannot open include file: 'SFML\Audio.hpp': No such file or directory
+  MySprite.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\mysprite.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  NetworkingManager.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\server.h(3): fatal error C1083: Cannot open include file: 'SFML/Network.hpp': No such file or directory
+  Packets.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\packets.h(2): fatal error C1083: Cannot open include file: 'SFML/Network.hpp': No such file or directory
+  SceneApp.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\sceneapp.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  Select_Players_State.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\sceneapp.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  Generating Code...
+  Compiling...
+  Server.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\server.h(3): fatal error C1083: Cannot open include file: 'SFML/Network.hpp': No such file or directory
+  Sound.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\sound.h(5): fatal error C1083: Cannot open include file: 'SFML\Audio.hpp': No such file or directory
+  TileMap.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\mysprite.h(2): fatal error C1083: Cannot open include file: 'SFML\Graphics.hpp': No such file or directory
+  Vector.cpp
+f:\current year work\networking\1700792_hugh tyson cmp303\1700792_hugh tyson cmp303\vector.h(2): fatal error C1083: Cannot open include file: 'SFML\System\Vector2.hpp': No such file or directory
+  Generating Code...
